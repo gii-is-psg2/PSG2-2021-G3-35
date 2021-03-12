@@ -15,4 +15,3 @@ target/*
 !.vscode/extensions.json
 _site/
 
-/bin/
