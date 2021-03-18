@@ -60,6 +60,15 @@
         <role>developer</role>
       </roles>
     </developer>
+    <developer>
+      <id>alebarled</id>
+      <name>Alejandro Barranco Ledesma</name>
+      <email>alebarled@alum.us.es</email>
+      <organization>US</organization>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
   </developers>
   
     <properties>
