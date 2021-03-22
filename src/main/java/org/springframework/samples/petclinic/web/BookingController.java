@@ -1,13 +1,21 @@
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.exceptions.AllRoomsBookedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -43,13 +51,13 @@ public class BookingController {
 // 	}
 //			
 	// Listar bookings.
-	
-	@GetMapping(value = { "/bookings" })
-	public String listBookingOfOwner(@PathVariable("ownerId") int ownerId, ModelMap modelMap) {
-		Iterable<Booking> bookings = this.bookingService.findBookingsByOwnerId(ownerId);
-		modelMap.put("bookings", bookings);
-		return VIEW_LIST_BOOKING;
-	}
+//	
+//	@GetMapping(value = { "/bookings" })
+//	public String listBookingOfOwner(@PathVariable("ownerId") int ownerId, ModelMap modelMap) {
+//		Iterable<Booking> bookings = this.bookingService.findBookingsByOwnerId(ownerId);
+//		modelMap.put("bookings", bookings);
+//		return VIEW_LIST_BOOKING;
+//	}
 	
 	
 	
@@ -68,15 +76,18 @@ public class BookingController {
 		Owner owner = this.ownerService.findOwnerById(ownerId);
 		Booking booking = this.bookingService.createBooking(owner);
 		
-		
+		List<String> petsNames = owner.getPets().stream().map(p->p.getName()).collect(Collectors.toList());
 		modelMap.put("owner", owner);
+		modelMap.put("petsNames", petsNames);
 		modelMap.put("booking", booking);
+		
+		modelMap.put("usedRooms", bookingService.findUsedRooms(LocalDate.of(2021, 03, 21), LocalDate.of(2021, 03, 25)));
 		
 		return VISTA_EDICION_BOOKING;
 	}
 	
 	@PostMapping("/bookings/new")
-	public String processNewReview(@PathVariable("ownerId") int ownerId, @Valid Booking booking,  BindingResult result,
+	public String processNewReview(@PathVariable("ownerId") int ownerId, Booking booking, BindingResult result,
 			ModelMap modelMap, RedirectAttributes redirectAttributes) {
 		
 		modelMap.put("buttonCreate", true);
@@ -94,11 +105,28 @@ public class BookingController {
 		// Si al validarlo, no hallamos ningún error:
 		
 		else { 
-			bookingService.saveBooking(booking);
-			modelMap.addAttribute("messageSuccess", "¡La reserva fue un exito!");
-			redirectAttributes.addFlashAttribute("message", String.format("The booking for %s was created.", owner.getFirstName()));
-			redirectAttributes.addFlashAttribute("messageType", "success");
-			return "redirect:/bookings";
+			try {
+				int i = 0;
+				List<Pet> pets = owner.getPets().stream().collect(Collectors.toList());
+				Pet optPet = null;
+				while(i < pets.size()) {
+					if(pets.get(i).getName().equals(booking.getPet().getName())) {
+						optPet = pets.get(i);
+						break;
+					}
+				}
+				booking.setPet(optPet);
+				System.out.println(booking);
+				bookingService.saveBooking(booking);
+				modelMap.addAttribute("messageSuccess", "¡La reserva fue un exito!");
+				redirectAttributes.addFlashAttribute("message", String.format("The booking for %s was created.", owner.getFirstName()));
+				redirectAttributes.addFlashAttribute("messageType", "success");
+				return "redirect:/owners/{ownerId}";
+			} catch (AllRoomsBookedException e) {
+				result.rejectValue("text", "AllRoomsBooked" ,"All our rooms are booked. Please try to book later.");
+				return VISTA_EDICION_BOOKING;
+			}
+			
 		}
 		
 		}

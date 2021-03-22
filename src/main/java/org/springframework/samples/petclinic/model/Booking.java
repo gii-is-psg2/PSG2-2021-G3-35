@@ -40,10 +40,5 @@ public @Data class Booking extends BaseEntity{
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name = "pet_id")
-	private Pet pet;
-	
-	@ManyToOne(optional=false)
-	@JoinColumn(name = "owner_id")
-	private Owner owner;
-	
+	private Pet pet;	
 }
