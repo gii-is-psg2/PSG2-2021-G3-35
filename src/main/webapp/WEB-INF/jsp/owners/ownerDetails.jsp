@@ -93,5 +93,51 @@
 
         </c:forEach>
     </table>
-
+    <h2>Bookings</h2>
+	  
+    <table id="bookingsTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th style="width: 120px;">Start Date</th>
+            <th style="width: 120px;">End Date</th>
+            <th style="width: 100px">Room</th>
+            <th style="width: 140px">Pet</th>
+            <th style="width: 30px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${owner.pets}" var="pets2">
+        	<c:forEach items="${pets2.bookings}" var="booking">
+            <tr>
+               
+                <td>
+                    <c:out value="${booking.startDate}"/>
+                </td>
+                <td>
+                    <c:out value="${booking.endDate}"/>
+                </td>
+                <td>
+                    <c:out value="${booking.room}"/>
+                </td>
+                <td>
+                    <c:out value="${booking.pet.name}"/>
+                </td>
+                <td>
+                    <spring:url value="/owners/{ownerId}/bookings/{bookingId}/delete" var="deleteUrl">
+						<spring:param name="ownerId" value="${owner.id}"/>
+						<spring:param name="bookingId" value="${booking.id}"/>
+					</spring:url>
+                    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-danger">Delete</a>
+                </td>
+              
+            </tr>
+            </c:forEach>
+        </c:forEach>
+        </tbody>
+    </table>
+    <spring:url value="/owners/{ownerId}/bookings/new" var="newBookingUrl">
+    	<spring:param name="ownerId" value="${owner.id}"/>
+    </spring:url>
+    <a href="${fn:escapeXml(newBookingUrl)}" class="btn btn-default">New Booking</a>
+    
 </petclinic:layout>
