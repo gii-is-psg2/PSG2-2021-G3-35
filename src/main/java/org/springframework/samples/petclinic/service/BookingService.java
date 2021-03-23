@@ -51,7 +51,18 @@ public class BookingService {
 			throw new AllRoomsBookedException();		
 	}
 	
+	//No he conseguido que borre, no me da error aparentemente así que no entiendo bien el problema
+	@Transactional
+	public void deleteBooking(int bookingId) {
+		bookingRepository.deleteById(bookingId);
+	}
 	
+	
+	public Booking findBookingById(int bookingId) {
+		return bookingRepository.findBookingById(bookingId);
+	}
+
+
 	public Booking createBooking(Owner owner){
 		Booking res = new Booking();
 		return res;

@@ -12,6 +12,8 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -40,5 +42,6 @@ public @Data class Booking extends BaseEntity{
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name = "pet_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Pet pet;	
 }

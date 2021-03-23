@@ -98,10 +98,11 @@
     <table id="bookingsTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Start Date</th>
-            <th style="width: 150px;">End Date</th>
-            <th style="width: 80px">Room</th>
-            <th style="width: 80px">Pet</th>
+            <th style="width: 120px;">Start Date</th>
+            <th style="width: 120px;">End Date</th>
+            <th style="width: 100px">Room</th>
+            <th style="width: 140px">Pet</th>
+            <th style="width: 30px"></th>
         </tr>
         </thead>
         <tbody>
@@ -120,6 +121,13 @@
                 </td>
                 <td>
                     <c:out value="${booking.pet.name}"/>
+                </td>
+                <td>
+                    <spring:url value="/owners/{ownerId}/bookings/{bookingId}/delete" var="deleteUrl">
+						<spring:param name="ownerId" value="${owner.id}"/>
+						<spring:param name="bookingId" value="${booking.id}"/>
+					</spring:url>
+                    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-danger">Delete</a>
                 </td>
               
             </tr>

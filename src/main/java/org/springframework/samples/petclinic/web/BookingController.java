@@ -114,6 +114,7 @@ public class BookingController {
 						optPet = pets.get(i);
 						break;
 					}
+					i++;
 				}
 				booking.setPet(optPet);
 				System.out.println(booking);
@@ -130,4 +131,17 @@ public class BookingController {
 		}
 		
 		}
+	
+	//Borrar reserva
+	//No he conseguido que borre
+	@GetMapping(value = "/bookings/{bookingId}/delete")
+	public String deleteBooking(@PathVariable("bookingId") int bookingId, ModelMap model, RedirectAttributes redirectAttributes) {
+			Booking booking = bookingService.findBookingById(bookingId);
+			bookingService.deleteBooking(bookingId);
+			
+			redirectAttributes.addFlashAttribute("message", String.format("The booking for %s was deleted.", booking.getPet().getName()));
+			redirectAttributes.addFlashAttribute("messageType", "success");
+			return "redirect:/owners/{ownerId}";
+	}
+	
 }

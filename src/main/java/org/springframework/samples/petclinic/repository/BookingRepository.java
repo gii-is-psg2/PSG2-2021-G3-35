@@ -13,6 +13,10 @@ public interface BookingRepository extends CrudRepository<Booking, Integer>{
 	
 	@Query("SELECT booking.room FROM Booking booking WHERE booking.startDate <=:startDate and booking.endDate >=:endDate")
 	public Collection<Integer> findUsedRooms(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+	
+	@Query("SELECT booking FROM Booking booking WHERE booking.id =:bookingId")
+	public Booking findBookingById(@Param("bookingId")int bookingId);
 	
 	
 }
