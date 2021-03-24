@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -40,8 +41,8 @@ public @Data class Booking extends BaseEntity{
 	@Max(20)
 	private Integer room;
 	
-	@ManyToOne(optional=false)
-	@JoinColumn(name = "pet_id")
+	@ManyToOne(optional=false, cascade = CascadeType.ALL)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JoinColumn(name = "pet_id")
 	private Pet pet;	
 }

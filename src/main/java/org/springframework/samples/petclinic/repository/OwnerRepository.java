@@ -19,12 +19,12 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.repository.OwnerRepository;
 
 /**
  * Spring Data JPA OwnerRepository interface
@@ -64,4 +64,10 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	
 	@Query("SELECT DISTINCT owner FROM Owner owner WHERE owner.user.username = :username")
 	public Optional<Owner> findByUserUsername(@Param("username") String username);
+	
+	@Modifying
+	@Query("DELETE FROM Owner owner WHERE owner.id =:id")
+	public void deleteById(@Param("id") int id);
 }
+
+

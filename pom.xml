@@ -43,15 +43,6 @@
       </roles>
     </developer>
     <developer>
-      <id>serrojjim</id>
-      <name>Sergio Rojas Jimenez</name>
-      <email>serrojjim@alum.us.es</email>
-      <organization>US</organization>
-      <roles>
-        <role>developer</role>
-      </roles>
-    </developer>
-    <developer>
       <id>felconmar</id>
       <name>Félix Conde Marrón</name>
       <email>felconmar@alum.us.es</email>
