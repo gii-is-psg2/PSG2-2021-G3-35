@@ -3,12 +3,16 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="error">
-
+<!DOCTYPE html>
+		<html>
+			<head>
+				<link rel="stylesheet" href="/resources/css/CSS.css">
+			</head>
     <spring:url value="/resources/images/pets.png" var="petsImage"/>
     <img src="${petsImage}"/>
 
     <h2>Something happened...</h2>
 
     <p>${exception.message}</p>
-
+</html>
 </petclinic:layout>

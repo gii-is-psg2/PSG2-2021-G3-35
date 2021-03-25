@@ -1,0 +1,7 @@
+body{	
+  background: #D08E68;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #895B41;
+}

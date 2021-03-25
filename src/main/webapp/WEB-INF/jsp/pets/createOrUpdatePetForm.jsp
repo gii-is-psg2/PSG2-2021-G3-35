@@ -5,6 +5,11 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="owners">
+<!DOCTYPE html>
+		<html>
+			<head>
+				<link rel="stylesheet" href="/resources/css/CSS.css">
+			</head>
     <jsp:attribute name="customScript">
         <script>
             $(function () {
@@ -48,4 +53,5 @@
         <c:if test="${!pet['new']}">
         </c:if>
     </jsp:body>
+    </html>
 </petclinic:layout>

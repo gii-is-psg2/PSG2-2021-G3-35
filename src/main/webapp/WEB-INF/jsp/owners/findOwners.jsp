@@ -9,7 +9,11 @@
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 
 <petclinic:layout pageName="owners">
-
+<!DOCTYPE html>
+		<html>
+			<head>
+				<link rel="stylesheet" href="/resources/css/CSS.css">
+			</head>
     <h2>Find Owners</h2>
 
     
@@ -36,5 +40,5 @@
     <sec:authorize access="hasAuthority('admin')">
 		<a class="btn btn-default" href='<spring:url value="/owners/new" htmlEscape="true"/>'>Add Owner</a>
 	</sec:authorize>
-	
+	</html>
 </petclinic:layout>

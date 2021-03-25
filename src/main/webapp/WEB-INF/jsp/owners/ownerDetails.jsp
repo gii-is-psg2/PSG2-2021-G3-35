@@ -5,7 +5,11 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="owners">
-
+<!DOCTYPE html>
+		<html>
+			<head>
+				<link rel="stylesheet" href="/resources/css/CSS.css">
+			</head>
     <h2>Owner Information</h2>
 
 
@@ -93,5 +97,5 @@
 
         </c:forEach>
     </table>
-
+	</html>
 </petclinic:layout>

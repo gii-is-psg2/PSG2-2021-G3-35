@@ -5,6 +5,11 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="vets">
+<!DOCTYPE html>
+		<html>
+			<head>
+				<link rel="stylesheet" href="/resources/css/CSS.css">
+			</head>
     <h2>Veterinarians</h2>
 
     <table id="vetsTable" class="table table-striped">
@@ -38,4 +43,5 @@
             </td>            
         </tr>
     </table>
+    </html>
 </petclinic:layout>
