@@ -2,14 +2,10 @@ package org.springframework.samples.petclinic.service;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Optional;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.repository.BookingRepository;
 import org.springframework.samples.petclinic.service.exceptions.AllRoomsBookedException;
 import org.springframework.stereotype.Service;
@@ -18,15 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BookingService {
 
-	private BookingRepository bookingRepository;
+	private final BookingRepository bookingRepository;
 	
-	private OwnerService ownerService;
+	private final OwnerService ownerService;
 	
-	private PetService petService;
+	private final PetService petService;
 	
 	
 	@Autowired
-	public BookingService(BookingRepository bookingRepository, OwnerService ownerService, PetService petService) {
+	public BookingService(final BookingRepository bookingRepository, final OwnerService ownerService, final PetService petService) {
 		this.bookingRepository = bookingRepository;
 		this.ownerService = ownerService;
 		this.petService = petService;
@@ -34,8 +30,8 @@ public class BookingService {
 	
 	
 	@Transactional
-	public void saveBooking(Booking booking) throws AllRoomsBookedException{
-		Collection<Integer> usedRooms = bookingRepository.findUsedRooms(booking.getStartDate(), booking.getEndDate());
+	public void saveBooking(final Booking booking) throws AllRoomsBookedException{
+		final Collection<Integer> usedRooms = this.bookingRepository.findUsedRooms(booking.getStartDate(), booking.getEndDate());
 		if(usedRooms.size() < 20) {
 			Boolean aux = false;
 			int possibleRoom = 1;
@@ -46,31 +42,39 @@ public class BookingService {
 					aux = true;
 			}
 			booking.setRoom(possibleRoom);
-			bookingRepository.save(booking);
+			this.bookingRepository.save(booking);
 		} else 
 			throw new AllRoomsBookedException();		
 	}
 	
 	//No he conseguido que borre, no me da error aparentemente así que no entiendo bien el problema
 	@Transactional
-	public void deleteBooking(int bookingId) {
-		bookingRepository.deleteById(bookingId);
+	public Booking deleteBooking(final int bookingId) {
+		final Booking booking = this.findBookingById(bookingId);
+		if (booking==null) {
+			return null;
+		}
+		else {
+			this.bookingRepository.deleteById(bookingId);
+			return booking;
+		}
+		
 	}
 	
 	
-	public Booking findBookingById(int bookingId) {
-		return bookingRepository.findBookingById(bookingId);
+	public Booking findBookingById(final int bookingId) {
+		return this.bookingRepository.findBookingById(bookingId);
 	}
 
 
-	public Booking createBooking(Owner owner){
-		Booking res = new Booking();
+	public Booking createBooking(final Owner owner){
+		final Booking res = new Booking();
 		return res;
 	}
 	
-	public Collection<Integer> findUsedRooms(LocalDate startDate, LocalDate endDate) {
+	public Collection<Integer> findUsedRooms(final LocalDate startDate, final LocalDate endDate) {
 		
-		return bookingRepository.findUsedRooms(startDate, endDate);
+		return this.bookingRepository.findUsedRooms(startDate, endDate);
 	}
 	
 }

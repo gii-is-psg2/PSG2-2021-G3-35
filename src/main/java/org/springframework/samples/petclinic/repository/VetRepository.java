@@ -36,6 +36,7 @@ import org.springframework.samples.petclinic.model.Vet;
  * @author Sam Brannen
  * @author Michael Isvy
  */
+
 public interface VetRepository extends CrudRepository<Vet, Integer>{
 
 	/**
@@ -43,6 +44,10 @@ public interface VetRepository extends CrudRepository<Vet, Integer>{
 	 * @return a <code>Collection</code> of <code>Vet</code>s
 	 */
 	Collection<Vet> findAll() throws DataAccessException;
+	
+	@Modifying
+	@Query("DELETE FROM Vet vet where vet.id =:id")
+	void deleteById(@Param("id") int id);
 
 	@Query("SELECT DISTINCT specialty FROM Specialty specialty")
 	Set<Specialty> findSpecialties();

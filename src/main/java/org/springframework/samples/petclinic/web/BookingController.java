@@ -2,11 +2,7 @@ package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
@@ -38,7 +34,7 @@ public class BookingController {
 	private static final String VIEW_SHOW_BOOKING="bookings/editChapter";
 	
 	@Autowired
-	public BookingController(BookingService bookingService, PetService petService, OwnerService ownerService) {
+	public BookingController(final BookingService bookingService, final PetService petService, final OwnerService ownerService) {
 
 		this.bookingService = bookingService;
 		this.petService = petService;
@@ -72,34 +68,34 @@ public class BookingController {
 	// Crear reserva
 	
 	@GetMapping("/bookings/new")
-	public String initAddReview(@PathVariable("ownerId") int ownerId, ModelMap modelMap) {
-		Owner owner = this.ownerService.findOwnerById(ownerId);
-		Booking booking = this.bookingService.createBooking(owner);
+	public String initAddReview(@PathVariable("ownerId") final int ownerId, final ModelMap modelMap) {
+		final Owner owner = this.ownerService.findOwnerById(ownerId);
+		final Booking booking = this.bookingService.createBooking(owner);
 		
-		List<String> petsNames = owner.getPets().stream().map(p->p.getName()).collect(Collectors.toList());
+		final List<String> petsNames = owner.getPets().stream().map(p->p.getName()).collect(Collectors.toList());
 		modelMap.put("owner", owner);
 		modelMap.put("petsNames", petsNames);
 		modelMap.put("booking", booking);
 		
-		modelMap.put("usedRooms", bookingService.findUsedRooms(LocalDate.of(2021, 03, 21), LocalDate.of(2021, 03, 25)));
+		modelMap.put("usedRooms", this.bookingService.findUsedRooms(LocalDate.of(2021, 03, 21), LocalDate.of(2021, 03, 25)));
 		
-		return VISTA_EDICION_BOOKING;
+		return BookingController.VISTA_EDICION_BOOKING;
 	}
 	
 	@PostMapping("/bookings/new")
-	public String processNewReview(@PathVariable("ownerId") int ownerId, Booking booking, BindingResult result,
-			ModelMap modelMap, RedirectAttributes redirectAttributes) {
+	public String processNewReview(@PathVariable("ownerId") final int ownerId, final Booking booking, final BindingResult result,
+			final ModelMap modelMap, final RedirectAttributes redirectAttributes) {
 		
 		modelMap.put("buttonCreate", true);
 		
-		Owner owner = this.ownerService.findOwnerById(ownerId);
+		final Owner owner = this.ownerService.findOwnerById(ownerId);
 		// Si al validarlo, encontramos errores:
 		if(result.hasErrors()) {
 			modelMap.put("booking", booking);
 			modelMap.put("owner", owner);
 			System.out.println("====================================================================================");
 			System.out.println(result.toString());
-			return VISTA_EDICION_BOOKING;
+			return BookingController.VISTA_EDICION_BOOKING;
 		}
 		
 		// Si al validarlo, no hallamos ningún error:
@@ -107,7 +103,7 @@ public class BookingController {
 		else { 
 			try {
 				int i = 0;
-				List<Pet> pets = owner.getPets().stream().collect(Collectors.toList());
+				final List<Pet> pets = owner.getPets().stream().collect(Collectors.toList());
 				Pet optPet = null;
 				while(i < pets.size()) {
 					if(pets.get(i).getName().equals(booking.getPet().getName())) {
@@ -118,29 +114,32 @@ public class BookingController {
 				}
 				booking.setPet(optPet);
 				System.out.println(booking);
-				bookingService.saveBooking(booking);
+				this.bookingService.saveBooking(booking);
 				modelMap.addAttribute("messageSuccess", "¡La reserva fue un exito!");
 				redirectAttributes.addFlashAttribute("message", String.format("The booking for %s was created.", owner.getFirstName()));
 				redirectAttributes.addFlashAttribute("messageType", "success");
 				return "redirect:/owners/{ownerId}";
-			} catch (AllRoomsBookedException e) {
+			} catch (final AllRoomsBookedException e) {
 				result.rejectValue("text", "AllRoomsBooked" ,"All our rooms are booked. Please try to book later.");
-				return VISTA_EDICION_BOOKING;
+				return BookingController.VISTA_EDICION_BOOKING;
 			}
 			
 		}
 		
 		}
 	
-	//Borrar reserva
-	//No he conseguido que borre
+
 	@GetMapping(value = "/bookings/{bookingId}/delete")
-	public String deleteBooking(@PathVariable("bookingId") int bookingId, ModelMap model, RedirectAttributes redirectAttributes) {
-			Booking booking = bookingService.findBookingById(bookingId);
-			bookingService.deleteBooking(bookingId);
-			
-			redirectAttributes.addFlashAttribute("message", String.format("The booking for %s was deleted.", booking.getPet().getName()));
-			redirectAttributes.addFlashAttribute("messageType", "success");
+	public String deleteBooking(@PathVariable("bookingId") final int bookingId, final ModelMap model, final RedirectAttributes redirectAttributes) {
+			final Booking res = this.bookingService.deleteBooking(bookingId);
+			if (res==null) {
+				redirectAttributes.addFlashAttribute("message", "The booking you are trying to delete doesn't exist.");
+			}
+			else {
+				
+				redirectAttributes.addFlashAttribute("message", String.format("The booking for %s was deleted.", res.getPet().getName()));
+				redirectAttributes.addFlashAttribute("messageType", "success");
+			}
 			return "redirect:/owners/{ownerId}";
 	}
 	
