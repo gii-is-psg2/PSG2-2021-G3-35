@@ -22,6 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.repository.UserRepository;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,5 +53,21 @@ public class UserService {
 	
 	public Optional<User> findUser(String username) {
 		return userRepository.findById(username);
+	}
+
+	/* Devuelve el usuario logueado */
+	public User getPrincipal() {
+		User res = null;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(!(auth instanceof AnonymousAuthenticationToken)) {
+			UserDetails userDetail = (UserDetails) auth.getPrincipal();
+			Optional<User> currentUser = findUser(userDetail.getUsername());
+			
+			if(currentUser.isPresent()) {
+				res = currentUser.get();
+			}
+		}
+		
+		return res;
 	}
 }
