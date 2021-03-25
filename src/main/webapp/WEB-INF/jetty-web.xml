@@ -4,4 +4,7 @@
     <!-- Fix Jetty 9 issue -->
     <!-- http://stackoverflow.com/questions/32643530/classpath-issue-between-jetty-maven-plugin-and-tomcat-jdbc-8-0-9-leading-to-ser -->
     <Set name="parentLoaderPriority">true</Set>
+    
 </Configure>
+
+
