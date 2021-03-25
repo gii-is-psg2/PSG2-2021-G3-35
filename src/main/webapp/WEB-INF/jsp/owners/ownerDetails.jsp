@@ -139,7 +139,7 @@
 						<spring:param name="ownerId" value="${owner.id}"/>
 						<spring:param name="bookingId" value="${booking.id}"/>
 					</spring:url>
-                    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-danger">Delete</a>
+                    <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash btn btn-danger"></a>
                 </td>
               
             </tr>

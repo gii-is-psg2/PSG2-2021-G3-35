@@ -32,7 +32,7 @@
                 	<spring:url value="/vets/{vetId}/delete" var="deleteUrl">
         			<spring:param name="vetId" value="${vet.id}"/>
     				</spring:url>
-    				<a href="${fn:escapeXml(deleteUrl)}" >Delete Vet</a>
+    				<a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash btn btn-danger"></a>
                 	
                 </td>
             </tr>

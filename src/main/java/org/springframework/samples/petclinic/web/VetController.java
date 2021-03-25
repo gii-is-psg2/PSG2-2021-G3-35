@@ -73,7 +73,7 @@ public class VetController {
 			redirectAttributes.addFlashAttribute("message","Vet "+vet.getFirstName()+" "+vet.getLastName()+" deleted.");
 		}
 		else {
-			redirectAttributes.addFlashAttribute("message","The owner you are trying to delete doesn't exist.");
+			redirectAttributes.addFlashAttribute("message","The vet you are trying to delete doesn't exist.");
 		}
 		
 		return "redirect:/vets";
