@@ -1,22 +1,33 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
 
 <petclinic:layout pageName="vets">
+
 <!DOCTYPE html>
 		<html>
 			<head>
 				<link rel="stylesheet" href="/resources/css/CSS.css">
 			</head>
-    <h2>Veterinarians</h2>
+ 
+    <h2><spring:message code="veterinarians"/></h2>
+
 
     <table id="vetsTable" class="table table-striped">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Specialties</th>
+            <th><spring:message code="firstname"/></th>
+            <th><spring:message code="specialties"/></th>
+            <sec:authorize access="hasAuthority('admin')">
+            <th></th>
+            <th></th>
+            </sec:authorize>
         </tr>
         </thead>
         <tbody>
@@ -31,12 +42,30 @@
                     </c:forEach>
                     <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
                 </td>
+              
+                <sec:authorize access="hasAuthority('admin')">
+                <td>
+                  <spring:url value="/vets/{vetId}/edit" var="editVetUrl">
+								    <spring:param name="vetId" value="${vet.id}"/>
+					        </spring:url>
+                  <a href="${editVetUrl}" class="glyphicon glyphicon-pencil"/></a>
+                </td>
+                
+                <td>
+                	<spring:url value="/vets/{vetId}/delete" var="deleteUrl">
+        			      <spring:param name="vetId" value="${vet.id}"/>
+    				      </spring:url>
+    				      <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash btn btn-danger"></a>
+                </td>
+              </sec:authorize>
+                
+
             </tr>
         </c:forEach>
         </tbody>
     </table>
 
     <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
-            
+         
     </html>
 </petclinic:layout>

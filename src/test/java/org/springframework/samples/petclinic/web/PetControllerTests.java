@@ -20,6 +20,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -38,7 +39,6 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
-import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -76,9 +76,12 @@ class PetControllerTests {
 		PetType cat = new PetType();
 		cat.setId(3);
 		cat.setName("hamster");
+		Pet pet = new Pet();
+		pet.setName("Leo");
 		given(this.petService.findPetTypes()).willReturn(Lists.newArrayList(cat));
 		given(this.ownerService.findOwnerById(TEST_OWNER_ID)).willReturn(new Owner());
 		given(this.petService.findPetById(TEST_PET_ID)).willReturn(new Pet());
+		given(this.petService.deletePetById(TEST_PET_ID)).willReturn(pet);
 	}
 
 	@WithMockUser(value = "spring")
@@ -143,6 +146,15 @@ class PetControllerTests {
 				.andExpect(model().attributeHasNoErrors("owner"))
 				.andExpect(model().attributeHasErrors("pet")).andExpect(status().isOk())
 				.andExpect(view().name("pets/createOrUpdatePetForm"));
+	}
+    
+    @WithMockUser(value = "spring")
+    @Test
+	void testDeletePet() throws Exception {
+		mockMvc.perform(get("/owners/1/pets/1/delete")).andExpect(status().is3xxRedirection())
+				.andExpect(flash().attribute("message", "Pet Leo deleted."))
+				.andExpect(view().name("redirect:/owners/1"));
+			
 	}
 
 }
