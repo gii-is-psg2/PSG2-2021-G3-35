@@ -5,3 +5,7 @@ body{
 .table-row-cell:odd {
     -fx-background-color: #895B41;
 }
+
+td,th{
+	background-color: #895B41;
+}
