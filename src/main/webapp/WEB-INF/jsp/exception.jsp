@@ -6,12 +6,16 @@
 
 
 <petclinic:layout pageName="error">
-
+<!DOCTYPE html>
+		<html>
+			<head>
+				<link rel="stylesheet" href="/resources/css/CSS.css">
+			</head>
     <spring:url value="/resources/images/pets.png" var="petsImage"/>
     <img src="${petsImage}"/>
 
     <h2><spring:message code="exception" text="default"/></h2>
     
     <p>${exception.message}</p>
-
+</html>
 </petclinic:layout>

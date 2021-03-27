@@ -12,6 +12,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <petclinic:layout pageName="owners">
 
+		<html>
+			<head>
+				<link rel="stylesheet" href="/resources/css/CSS.css">
+			</head>
+  
     <h2><spring:message code="findowner"/></h2>
 
     
@@ -38,5 +43,5 @@
     <sec:authorize access="hasAuthority('admin')">
 		<a class="btn btn-default" href='<spring:url value="/owners/new" htmlEscape="true"/>'><spring:message code="addowner"/></a>
 	</sec:authorize>
-	
+	</html>
 </petclinic:layout>

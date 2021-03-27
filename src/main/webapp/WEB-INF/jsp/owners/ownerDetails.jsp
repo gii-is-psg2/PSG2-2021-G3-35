@@ -7,9 +7,13 @@
 
 
 <petclinic:layout pageName="owners">
+<!DOCTYPE html>
+		<html>
+			<head>
+				<link rel="stylesheet" href="/resources/css/CSS.css">
+			</head>
 
     <h2><spring:message code="ownerin"/></h2>
-
 
     <table class="table table-striped">
         <tr>
@@ -109,6 +113,7 @@
 
         </c:forEach>
     </table>
+      
     <h2>Bookings</h2>
 	  
     <table id="bookingsTable" class="table table-striped">
@@ -156,4 +161,5 @@
     </spring:url>
     <a href="${fn:escapeXml(newBookingUrl)}" class="btn btn-default">New Booking</a>
     
+  </html>
 </petclinic:layout>

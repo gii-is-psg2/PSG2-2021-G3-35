@@ -8,6 +8,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="owners">
+<!DOCTYPE html>
+		<html>
+			<head>
+				<link rel="stylesheet" href="/resources/css/CSS.css">
+			</head>
     <h2>
         <c:if test="${owner['new']}"><spring:message code="new"/> </c:if> &nbsp;<spring:message code="owner"/>
     </h2>
@@ -42,4 +47,5 @@
             </div>
         </div>
     </form:form>
+    </html>
 </petclinic:layout>

@@ -7,6 +7,11 @@
 
 
 <petclinic:layout pageName="owners">
+<!DOCTYPE html>
+		<html>
+			<head>
+				<link rel="stylesheet" href="/resources/css/CSS.css">
+			</head>
     <jsp:attribute name="customScript">
         <script>
             $(function () {
@@ -68,5 +73,5 @@
             </c:forEach>
         </table>
     </jsp:body>
-
+	</html>
 </petclinic:layout>
