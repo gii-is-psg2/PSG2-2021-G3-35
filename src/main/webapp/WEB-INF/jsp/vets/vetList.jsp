@@ -9,12 +9,6 @@
 
 
 <petclinic:layout pageName="vets">
-
-<!DOCTYPE html>
-		<html>
-			<head>
-				<link rel="stylesheet" href="/resources/css/CSS.css">
-			</head>
  
     <h2><spring:message code="veterinarians"/></h2>
 
@@ -67,5 +61,4 @@
 
     <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
          
-    </html>
 </petclinic:layout>

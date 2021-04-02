@@ -9,13 +9,9 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <petclinic:layout pageName="owners">
 
-		<html>
-			<head>
-				<link rel="stylesheet" href="/resources/css/CSS.css">
-			</head>
   
     <h2><spring:message code="findowner"/></h2>
 

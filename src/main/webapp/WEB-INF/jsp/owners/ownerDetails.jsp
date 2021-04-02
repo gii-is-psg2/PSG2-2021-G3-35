@@ -7,11 +7,6 @@
 
 
 <petclinic:layout pageName="owners">
-<!DOCTYPE html>
-		<html>
-			<head>
-				<link rel="stylesheet" href="/resources/css/CSS.css">
-			</head>
 
     <h2><spring:message code="ownerin"/></h2>
 
@@ -161,5 +156,4 @@
     </spring:url>
     <a href="${fn:escapeXml(newBookingUrl)}" class="btn btn-default">New Booking</a>
     
-  </html>
 </petclinic:layout>

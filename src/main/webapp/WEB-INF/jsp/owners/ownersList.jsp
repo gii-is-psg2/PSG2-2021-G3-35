@@ -8,12 +8,6 @@
 
 
 <petclinic:layout pageName="owners">
-
-	<!DOCTYPE html>
-		<html>
-			<head>
-				<link rel="stylesheet" href="/resources/css/CSS.css">
-			</head>
 		    
     <h2><spring:message code="owners"/></h2>
 
@@ -65,5 +59,4 @@
         </c:forEach>
         </tbody>
     </table>
-  </html>
 </petclinic:layout>

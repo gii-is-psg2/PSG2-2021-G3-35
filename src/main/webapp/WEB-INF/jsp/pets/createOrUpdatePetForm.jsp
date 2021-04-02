@@ -6,11 +6,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="owners">
-<!DOCTYPE html>
-		<html>
-			<head>
-				<link rel="stylesheet" href="/resources/css/CSS.css">
-			</head>
+
     <jsp:attribute name="customScript">
         <script>
             $(function () {
@@ -58,5 +54,4 @@
         <c:if test="${!pet['new']}">
         </c:if>
     </jsp:body>
-    </html>
 </petclinic:layout>
