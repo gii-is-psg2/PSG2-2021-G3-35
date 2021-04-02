@@ -146,13 +146,13 @@ public class OwnerController {
 	
 	@GetMapping("/owners/{ownerId}/delete")
 	public String deleteOwner(@PathVariable("ownerId") final int ownerId, final RedirectAttributes redirectAttributes) {
-		Owner result = this.ownerService.deleteOwnerById(ownerId);
+		final Owner result = this.ownerService.deleteOwnerById(ownerId);
 		if (result==null) {
-			redirectAttributes.addFlashAttribute("message", "The owner you are trying to delete doesn't exist.");
+			redirectAttributes.addFlashAttribute("message", "deleteownererror");
 		}
 		else {
+			redirectAttributes.addFlashAttribute("message", "deleteownersuccess");
 			
-			redirectAttributes.addFlashAttribute("message", "Owner "+result.getFirstName()+" "+result.getLastName()+" deleted.");
 		}
 		return "redirect:/owners?lastName=";
 	}

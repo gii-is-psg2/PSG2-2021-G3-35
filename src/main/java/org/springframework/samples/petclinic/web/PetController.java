@@ -155,9 +155,9 @@ public class PetController {
     public String deletePet(@PathVariable("ownerId") final int ownerId,@PathVariable("petId") final int petId, final RedirectAttributes redirectAttributes) {
         	final Pet result = this.petService.deletePetById(petId);
         	if(result==null) 
-        		redirectAttributes.addFlashAttribute("message", "The pet you are trying to delete doesn't exist.");
+        		redirectAttributes.addFlashAttribute("message", "deletepeterror");
         	else 
-        		redirectAttributes.addFlashAttribute("message", "Pet "+result.getName()+" deleted.");
+        		redirectAttributes.addFlashAttribute("message", "deletepetsuccess");
 
         	return "redirect:/owners/"+ownerId;
         	

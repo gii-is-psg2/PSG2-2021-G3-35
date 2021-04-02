@@ -81,7 +81,7 @@ class VetControllerTests {
     @Test
 	void testDeleteVets() throws Exception {
 		mockMvc.perform(get("/vets/1/delete")).andExpect(status().is3xxRedirection())
-				.andExpect(flash().attribute("message", "Vet James Carter deleted."))
+				.andExpect(flash().attribute("message", "deletevetsuccess"))
 				.andExpect(view().name("redirect:/vets"));
 			
 	}

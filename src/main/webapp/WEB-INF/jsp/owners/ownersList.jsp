@@ -6,6 +6,13 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
+<c:if test="${success == true}" >
+<spring:message code="${owner}" var="ownertrad"/>
+<spring:message code="${deleted}" var="deleted"/>
+${message} = ${ownertrad} + ${deleted};
+
+</c:if>
+
 
 <petclinic:layout pageName="owners">
 		    
