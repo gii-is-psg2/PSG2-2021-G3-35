@@ -16,12 +16,15 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
@@ -76,6 +79,29 @@ class VetServiceTests {
 	
 	@Test
 	@Transactional
+	void shouldFindVetById() {
+		Optional<Vet> vet = this.vetService.findVetById(1);
+		
+		Assertions.assertThat(vet).isPresent();
+		Assertions.assertThat(vet.get().getFirstName()).isEqualTo("James");
+		Assertions.assertThat(vet.get().getLastName()).isEqualTo("Carter");
+	}
+	
+	@Test
+	@Transactional
+	void shouldSaveVet() {
+		Vet vet = this.vetService.findVetById(1).get();
+		vet.setLastName("Rogers");
+		
+		this.vetService.saveVet(vet);
+		
+		Vet saveVet = this.vetService.findVetById(1).get();
+		Assertions.assertThat(saveVet.getFirstName()).isEqualTo("James");
+		Assertions.assertThat(saveVet.getLastName()).isEqualTo("Rogers");
+	}
+	
+	@Test
+	@Transactional
 	void shouldDeleteVet() {
 		final Vet result = this.vetService.deleteVetById(1);
 		Assertions.assertThat(result).isNotNull();
@@ -88,7 +114,30 @@ class VetServiceTests {
 		Assertions.assertThat(result).isNull();
 	}
 	
+	@Test
+	@Transactional
+	void shouldFindSpecialties() {
+		Set<Specialty> specialties = this.vetService.findSpecialties();
+		
+		Assertions.assertThat(specialties).isNotEmpty();
+		Assertions.assertThat(specialties.size()).isEqualTo(3);
+	}
 	
+	@Test
+	@Transactional
+	void shouldFindSpecialtyByName() {
+		Specialty specialty = this.vetService.findSpecialtyByName("radiology");
+		
+		Assertions.assertThat(specialty.getName()).isEqualTo("radiology");
+	}
 
+	@Test
+	@Transactional
+	void shouldAddSpecialties() {
+		Set<Specialty> specialties = this.vetService.findSpecialties();
+		
+		Assertions.assertThat(specialties).isNotEmpty();
+		Assertions.assertThat(specialties.size()).isEqualTo(3);
+	}
 
 }

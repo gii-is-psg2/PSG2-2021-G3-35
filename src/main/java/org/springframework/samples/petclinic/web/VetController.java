@@ -51,11 +51,6 @@ public class VetController {
 	
 	private final VetService vetService;
 	
-//	@InitBinder("vet")
-//	public void initVetBinder(WebDataBinder dataBinder) {
-//		dataBinder.addCustomFormatter(new SpecialtyFormatter(vetService), "specialties");
-//	}
-	
 	@Autowired
 	public VetController(final VetService clinicService) {
 		this.vetService = clinicService;
