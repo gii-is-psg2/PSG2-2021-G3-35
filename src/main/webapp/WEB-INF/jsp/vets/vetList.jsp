@@ -59,6 +59,17 @@
         </tbody>
     </table>
 
-    <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
+    <table class="table-buttons" style="float:left">
+        <tr>
+        	<sec:authorize access="hasAuthority('admin')">
+        	<td style="width: 80px;">
+        		<a class="btn btn-default"  href='<spring:url value="/vets/new" htmlEscape="true"/>'><spring:message code="addvet"/></a>
+            </td>
+            </sec:authorize>
+            <td>
+                <a href="<spring:url value="/vets.xml" htmlEscape="true" />"><spring:message code="viewasxml"/></a>
+            </td>    
+        </tr>
+    </table>
          
 </petclinic:layout>
