@@ -38,30 +38,30 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
-	public UserService(UserRepository userRepository) {
+	public UserService(final UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
 	@Transactional
-	public void saveUser(User user) throws DataAccessException {
+	public void saveUser(final User user) throws DataAccessException {
 		user.setEnabled(true);
-		userRepository.save(user);
+		this.userRepository.save(user);
 	}
 	
-	public Optional<User> findUser(String username) {
-		return userRepository.findById(username);
+	public Optional<User> findUser(final String username) {
+		return this.userRepository.findById(username);
 	}
 
 	/* Devuelve el usuario logueado */
 	public User getPrincipal() {
 		User res = null;
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(!(auth instanceof AnonymousAuthenticationToken)) {
-			UserDetails userDetail = (UserDetails) auth.getPrincipal();
-			Optional<User> currentUser = findUser(userDetail.getUsername());
+			final UserDetails userDetail = (UserDetails) auth.getPrincipal();
+			final Optional<User> currentUser = this.findUser(userDetail.getUsername());
 			
 			if(currentUser.isPresent()) {
 				res = currentUser.get();
@@ -69,5 +69,16 @@ public class UserService {
 		}
 		
 		return res;
+	}
+	
+	@Transactional
+	public User deleteUserByName(final String name) throws DataAccessException {
+		final User user = this.findUser(name).get();
+    	if(user==null)
+    		return null;
+    	else {
+    		this.userRepository.deleteByName(name);
+			return user;
+    	}
 	}
 }

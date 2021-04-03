@@ -50,6 +50,9 @@ public class OwnerController {
 
 	private final OwnerService ownerService;
 	
+	@Autowired
+	UserService userService;
+	
 
 	@Autowired
 	public OwnerController(final OwnerService ownerService, final UserService userService, final AuthoritiesService authoritiesService) {
@@ -154,6 +157,7 @@ public class OwnerController {
 			redirectAttributes.addFlashAttribute("message", "deleteownererror");
 		}
 		else {
+			this.userService.deleteUserByName(result.getUser().getUsername());
 			redirectAttributes.addFlashAttribute("message", "deleteownersuccess");
 			
 		}

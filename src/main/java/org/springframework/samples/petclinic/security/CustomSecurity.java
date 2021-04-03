@@ -32,10 +32,13 @@ public class CustomSecurity {
 	public class IsSameOwner {
 		
 	    public boolean hasPermission(final int id) {
+	    	try {
 	    	final int ownerIdLoggedIn = CustomSecurity.this.ownerService.findByUserUsername(SecurityContextHolder.getContext()
 	    		.getAuthentication().getName()).get().getId();
-
 	        return id==ownerIdLoggedIn;
+	    	}catch(final Exception e) {
+	    		return false;
+	    	}
 	    }
 	    
 	    
@@ -74,5 +77,7 @@ public class CustomSecurity {
 		    	}
 	    }
 	}
+	
+	
 
 }
