@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ public class VisitDeleteController {
 	PetService petService;
 	
 	@GetMapping("/owners/{ownerId}/visits/{visitId}/delete")
+	@PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSameOwner.hasPermission(#ownerId)")
 	public String deleteVisit(@PathVariable("ownerId") final int ownerId,@PathVariable("visitId") final int visitId, final RedirectAttributes redirectAttributes) {
 		final Visit result = this.petService.deleteVisitById(visitId);
 		if (result==null) {

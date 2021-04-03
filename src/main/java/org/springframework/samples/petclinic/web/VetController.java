@@ -28,6 +28,7 @@ import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Vets;
 import org.springframework.samples.petclinic.service.VetService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -128,6 +129,7 @@ public class VetController {
 	}
 	
 	@GetMapping(value = "/vets/{id}/delete")
+	@PreAuthorize("hasAuthority('admin')")
 	public String deleteVet(@PathVariable("id") final int id, final RedirectAttributes redirectAttributes) {
 		final Vet vet = this.vetService.deleteVetById(id);
 		if(vet!=null) {

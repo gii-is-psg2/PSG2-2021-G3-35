@@ -27,6 +27,7 @@ import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -152,6 +153,7 @@ public class PetController {
 	}
         
         @GetMapping(value = "/pets/{petId}/delete")
+        @PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSameOwner.hasPermission(#ownerId)")
     public String deletePet(@PathVariable("ownerId") final int ownerId,@PathVariable("petId") final int petId, final RedirectAttributes redirectAttributes) {
         	final Pet result = this.petService.deletePetById(petId);
         	if(result==null) 

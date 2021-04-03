@@ -234,5 +234,19 @@ class PetServiceTests {
 		final Pet result = this.petService.deletePetById(122);
 		assertThat(result).isNull();
 	}
+	
+	@Test
+	@Transactional
+	void shouldDeleteVisit() {
+		final Visit result = this.petService.deleteVisitById(1);
+		assertThat(result).isNotNull();
+	}
+	
+	@Test
+	@Transactional
+	void shouldNotDeleteVisit() {
+		final Visit result = this.petService.deleteVisitById(122);
+		assertThat(result).isNull();
+	}
 
 }

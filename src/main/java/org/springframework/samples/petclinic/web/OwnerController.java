@@ -25,6 +25,7 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,6 +49,7 @@ public class OwnerController {
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
 	private final OwnerService ownerService;
+	
 
 	@Autowired
 	public OwnerController(final OwnerService ownerService, final UserService userService, final AuthoritiesService authoritiesService) {
@@ -145,6 +147,7 @@ public class OwnerController {
 	}
 	
 	@GetMapping("/owners/{ownerId}/delete")
+	@PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSameOwner.hasPermission(#ownerId)")
 	public String deleteOwner(@PathVariable("ownerId") final int ownerId, final RedirectAttributes redirectAttributes) {
 		final Owner result = this.ownerService.deleteOwnerById(ownerId);
 		if (result==null) {

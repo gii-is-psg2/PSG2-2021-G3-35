@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 
 <petclinic:layout pageName="owners">
@@ -36,12 +37,12 @@
 
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default"><spring:message code="editowner"/></a>
 
- 
+ <sec:authorize access="hasAuthority('admin') || @isSameOwner.hasPermission(#ownerId)">
     <spring:url value="{ownerId}/delete" var="deleteUrl">
         <spring:param name="ownerId" value="${owner.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default"><spring:message code="deleteowner"/></a>
-    
+ </sec:authorize>   
     <spring:url value="{ownerId}/pets/new" var="addUrl">
         <spring:param name="ownerId" value="${owner.id}"/>
     </spring:url>
@@ -96,6 +97,7 @@
                                 </spring:url>
                                 <a href="${fn:escapeXml(petUrl)}"><spring:message code="editpet"/></a>
                             </td>
+                            <sec:authorize access="hasAuthority('admin') || @isSameOwner.hasPermission(#ownerId)">
                             <td>
                                 <spring:url value="/owners/{ownerId}/pets/{petId}/delete" var="petUrl">
                                     <spring:param name="ownerId" value="${owner.id}"/>
@@ -103,6 +105,7 @@
                                 </spring:url>
                                 <a href="${fn:escapeXml(petUrl)}"><spring:message code="deletepet"/></a>
                             </td>
+                            </sec:authorize>
                             <td>
                                 <spring:url value="/owners/{ownerId}/pets/{petId}/visits/new" var="visitUrl">
                                     <spring:param name="ownerId" value="${owner.id}"/>
@@ -149,11 +152,13 @@
                     <c:out value="${booking.pet.name}"/>
                 </td>
                 <td>
+                <sec:authorize access="hasAuthority('admin') || @isSameOwner.hasPermission(#ownerId)">
                     <spring:url value="/owners/{ownerId}/bookings/{bookingId}/delete" var="deleteUrl">
 						<spring:param name="ownerId" value="${owner.id}"/>
 						<spring:param name="bookingId" value="${booking.id}"/>
 					</spring:url>
                     <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash btn btn-danger"></a>
+                </sec:authorize>
                 </td>
               
             </tr>

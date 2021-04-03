@@ -12,6 +12,7 @@ import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.exceptions.AllRoomsBookedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -130,15 +131,14 @@ public class BookingController {
 	
 
 	@GetMapping(value = "/bookings/{bookingId}/delete")
+	@PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSameBookingOwner.hasPermission(#bookingId)")
 	public String deleteBooking(@PathVariable("bookingId") final int bookingId, final ModelMap model, final RedirectAttributes redirectAttributes) {
 			final Booking res = this.bookingService.deleteBooking(bookingId);
 			if (res==null) {
-				redirectAttributes.addFlashAttribute("message", "The booking you are trying to delete doesn't exist.");
+				redirectAttributes.addFlashAttribute("message", "deletebookingerror");
 			}
 			else {
-				
-				redirectAttributes.addFlashAttribute("message", String.format("The booking for %s was deleted.", res.getPet().getName()));
-				redirectAttributes.addFlashAttribute("messageType", "success");
+				redirectAttributes.addFlashAttribute("message", "deletebookingsuccess");
 			}
 			return "redirect:/owners/{ownerId}";
 	}
