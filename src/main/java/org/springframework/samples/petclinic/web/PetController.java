@@ -153,7 +153,7 @@ public class PetController {
 	}
         
         @GetMapping(value = "/pets/{petId}/delete")
-        @PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSameOwner.hasPermission(#ownerId)")
+        @PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSamePetOwner.hasPermission(#petId)")
     public String deletePet(@PathVariable("ownerId") final int ownerId,@PathVariable("petId") final int petId, final RedirectAttributes redirectAttributes) {
         	final Pet result = this.petService.deletePetById(petId);
         	if(result==null) 

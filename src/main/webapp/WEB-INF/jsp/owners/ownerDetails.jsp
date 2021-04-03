@@ -97,7 +97,7 @@
                                 </spring:url>
                                 <a href="${fn:escapeXml(petUrl)}"><spring:message code="editpet"/></a>
                             </td>
-                            <sec:authorize access="hasAuthority('admin') || @isSameOwner.hasPermission(#ownerId)">
+                            <sec:authorize access="hasAuthority('admin') || hasAuthority('owner') && @isSamePetOwner.hasPermission(${pet.id})">
                             <td>
                                 <spring:url value="/owners/{ownerId}/pets/{petId}/delete" var="petUrl">
                                     <spring:param name="ownerId" value="${owner.id}"/>
