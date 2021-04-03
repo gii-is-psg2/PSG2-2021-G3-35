@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Owner;
@@ -47,55 +49,37 @@ public class BookingController {
 // 		dataBinder.setDisallowedFields("id");
 // 	}
 //			
-	// Listar bookings.
-//	
-//	@GetMapping(value = { "/bookings" })
-//	public String listBookingOfOwner(@PathVariable("ownerId") int ownerId, ModelMap modelMap) {
-//		Iterable<Booking> bookings = this.bookingService.findBookingsByOwnerId(ownerId);
-//		modelMap.put("bookings", bookings);
-//		return VIEW_LIST_BOOKING;
-//	}
-	
-	
-	
-	
-//	@GetMapping(value = { "/chapters/{chapterId}" })
-//	public String showChapter(@PathVariable("chapterId") int chapterId, ModelMap modelMap) {
-//		Chapter chapter = this.chapterService.findChapterById(chapterId);
-//		modelMap.put("chapter", chapter);
-//		return VIEW_SHOW_CHAPTER;
-//	}
 	
 	// Crear reserva
 	
+
 	@GetMapping("/bookings/new")
 	public String initAddReview(@PathVariable("ownerId") final int ownerId, final ModelMap modelMap) {
 		final Owner owner = this.ownerService.findOwnerById(ownerId);
-		final Booking booking = this.bookingService.createBooking(owner);
+		final Booking booking = this.bookingService.createBooking();
 		
 		final List<String> petsNames = owner.getPets().stream().map(p->p.getName()).collect(Collectors.toList());
 		modelMap.put("owner", owner);
 		modelMap.put("petsNames", petsNames);
 		modelMap.put("booking", booking);
 		
-		modelMap.put("usedRooms", this.bookingService.findUsedRooms(LocalDate.of(2021, 03, 21), LocalDate.of(2021, 03, 25)));
+//		modelMap.put("usedRooms", this.bookingService.findUsedRooms(LocalDate.of(2021, 03, 21), LocalDate.of(2021, 03, 25)));
 		
 		return BookingController.VISTA_EDICION_BOOKING;
 	}
 	
 	@PostMapping("/bookings/new")
-	public String processNewReview(@PathVariable("ownerId") final int ownerId, final Booking booking, final BindingResult result,
+	public String processNewReview(@PathVariable("ownerId") final int ownerId, @Valid Booking booking, final BindingResult result,
 			final ModelMap modelMap, final RedirectAttributes redirectAttributes) {
 		
 		modelMap.put("buttonCreate", true);
-		
 		final Owner owner = this.ownerService.findOwnerById(ownerId);
 		// Si al validarlo, encontramos errores:
 		if(result.hasErrors()) {
+			final List<String> petsNames = owner.getPets().stream().map(p->p.getName()).collect(Collectors.toList());
 			modelMap.put("booking", booking);
 			modelMap.put("owner", owner);
-			System.out.println("====================================================================================");
-			System.out.println(result.toString());
+			modelMap.put("petsNames", petsNames);
 			return BookingController.VISTA_EDICION_BOOKING;
 		}
 		

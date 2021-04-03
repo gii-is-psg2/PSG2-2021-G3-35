@@ -68,8 +68,5 @@
         </c:forEach>
         </tbody>
     </table>
-    <c:forEach items="${usedRooms}" var="usedRoom">
-			<c:out value="${usedRoom}"/>
-	</c:forEach>
     </jsp:body>
 </petclinic:layout>
