@@ -64,7 +64,8 @@
                         <dt><spring:message code="birth"/></dt>
                         <dd><petclinic:localDate date="${pet.birthDate}" pattern="yyyy-MM-dd"/></dd>
                         <dt><spring:message code="type"/></dt>
-                        <dd><c:out value="${pet.type.name}"/></dd>
+                        <spring:message code="${pet.type.name}" var="pettype"/>
+                        <dd><c:out value="${pettype}"/></dd>
                     </dl>
                 </td>
                 <td valign="top">
@@ -122,15 +123,15 @@
         </c:forEach>
     </table>
       
-    <h2>Bookings</h2>
+    <h2><spring:message code="bookings"/></h2>
 	  
     <table id="bookingsTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 120px;">Start Date</th>
-            <th style="width: 120px;">End Date</th>
-            <th style="width: 100px">Room</th>
-            <th style="width: 140px">Pet</th>
+            <th style="width: 120px;"><spring:message code="startdate"/></th>
+            <th style="width: 120px;"><spring:message code="enddate"/></th>
+            <th style="width: 100px"><spring:message code="room"/></th>
+            <th style="width: 140px"><spring:message code="pet"/></th>
             <th style="width: 30px"></th>
         </tr>
         </thead>
@@ -169,6 +170,6 @@
     <spring:url value="/owners/{ownerId}/bookings/new" var="newBookingUrl">
     	<spring:param name="ownerId" value="${owner.id}"/>
     </spring:url>
-    <a href="${fn:escapeXml(newBookingUrl)}" class="btn btn-default">New Booking</a>
+    <a href="${fn:escapeXml(newBookingUrl)}" class="btn btn-default"><spring:message code="new"/> &nbsp;<spring:message code="booking"/></a>
     
 </petclinic:layout>

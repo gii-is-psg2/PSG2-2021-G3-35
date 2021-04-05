@@ -72,12 +72,16 @@ public class OwnerController {
 	}
 
 	@PostMapping(value = "/owners/new")
-	public String processCreationForm(@Valid final Owner owner, final BindingResult result) {
+	public String processCreationForm(@Valid final Owner owner, final BindingResult result,final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
+			redirectAttributes.addFlashAttribute("message", "addownererror");
+
 			return OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
 			//creating owner, user and authorities
+			redirectAttributes.addFlashAttribute("message", "addownersuccess");
+
 			this.ownerService.saveOwner(owner);
 			
 			return "redirect:/owners/" + owner.getId();
@@ -126,13 +130,16 @@ public class OwnerController {
 
 	@PostMapping(value = "/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid final Owner owner, final BindingResult result,
-			@PathVariable("ownerId") final int ownerId) {
+			@PathVariable("ownerId") final int ownerId, final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
+			redirectAttributes.addFlashAttribute("message", "editownererror");
 			return OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
 			owner.setId(ownerId);
 			this.ownerService.saveOwner(owner);
+			redirectAttributes.addFlashAttribute("message", "editownersuccess");
+			
 			return "redirect:/owners/{ownerId}";
 		}
 	}

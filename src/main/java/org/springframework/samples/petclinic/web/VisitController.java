@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author Juergen Hoeller
@@ -77,12 +78,16 @@ public class VisitController {
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
 	@PostMapping(value = "/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@Valid final Visit visit, final BindingResult result) {
+	public String processNewVisitForm(@Valid final Visit visit, final BindingResult result,final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
+			redirectAttributes.addFlashAttribute("message", "addvisiterror");
+
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
 			this.petService.saveVisit(visit);
+			redirectAttributes.addFlashAttribute("message", "addvisitsuccess");
+
 			return "redirect:/owners/{ownerId}";
 		}
 	}

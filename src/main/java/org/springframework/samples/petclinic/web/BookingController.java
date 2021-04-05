@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.web;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,7 +68,7 @@ public class BookingController {
 	}
 	
 	@PostMapping("/bookings/new")
-	public String processNewReview(@PathVariable("ownerId") final int ownerId, @Valid Booking booking, final BindingResult result,
+	public String processNewReview(@PathVariable("ownerId") final int ownerId, @Valid final Booking booking, final BindingResult result,
 			final ModelMap modelMap, final RedirectAttributes redirectAttributes) {
 		
 		modelMap.put("buttonCreate", true);
@@ -101,7 +100,7 @@ public class BookingController {
 				System.out.println(booking);
 				this.bookingService.saveBooking(booking);
 				modelMap.addAttribute("messageSuccess", "¡La reserva fue un exito!");
-				redirectAttributes.addFlashAttribute("message", String.format("The booking for %s was created.", owner.getFirstName()));
+				redirectAttributes.addFlashAttribute("message", "addbookingsuccess");
 				redirectAttributes.addFlashAttribute("messageType", "success");
 				return "redirect:/owners/{ownerId}";
 			} catch (final AllRoomsBookedException e) {

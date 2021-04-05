@@ -32,9 +32,11 @@
                 </td>
                 <td>
                     <c:forEach var="specialty" items="${vet.specialties}">
-                        <c:out value="${specialty.name} "/>
+                    	<spring:message code="${specialty.name}" var="specialty"/>
+                    	
+                        <c:out value="${specialty} "/>
                     </c:forEach>
-                    <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
+                    <c:if test="${vet.nrOfSpecialties == 0}"><spring:message code="ninguna"/></c:if>
                 </td>
               
                 <sec:authorize access="hasAuthority('admin')">

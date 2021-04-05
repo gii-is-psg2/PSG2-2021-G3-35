@@ -62,6 +62,8 @@ public class VetController {
 		return this.vetService.findSpecialties().stream().collect(Collectors.toList());
 	}
 
+	
+	
 	@GetMapping(value = { "/vets" })
 	public String showVetList(final Map<String, Object> model) {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
@@ -81,11 +83,13 @@ public class VetController {
 	}
 	
 	@PostMapping(value = "/vets/new")
-	public String processCreationForm(@Valid final Vet vet, final BindingResult result, final HttpServletRequest request) {
+	public String processCreationForm(@Valid final Vet vet, final BindingResult result, final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
+			redirectAttributes.addFlashAttribute("message", "addveterror");
 			return VetController.VIEWS_VET_CREATE_OR_UPDATE_FORM;
 		}else {
 			final String[] array = request.getParameterValues("specialties");
+			redirectAttributes.addFlashAttribute("message", "addvetsuccess");
 			this.vetService.addSpecialties(vet, array);
 			this.vetService.saveVet(vet);
 			return "redirect:/vets";
@@ -106,14 +110,18 @@ public class VetController {
 	
 	@PostMapping(value = "/vets/{vetId}/edit")
 	public String processUpdateVetForm(@Valid final Vet vet, final BindingResult result,
-			@PathVariable("vetId") final int vetId, final HttpServletRequest request) {
+			@PathVariable("vetId") final int vetId, final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
+			redirectAttributes.addFlashAttribute("message", "editveterror");
+
 			return VetController.VIEWS_VET_CREATE_OR_UPDATE_FORM;
 		}else {
 			final String[] array = request.getParameterValues("specialties");
 			this.vetService.addSpecialties(vet, array);
 			vet.setId(vetId);
 			this.vetService.saveVet(vet);
+			redirectAttributes.addFlashAttribute("message", "editvetsuccess");
+
 			return "redirect:/vets";
 		}
 	}

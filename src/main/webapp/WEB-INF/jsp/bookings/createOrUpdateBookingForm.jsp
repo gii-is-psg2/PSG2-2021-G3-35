@@ -15,34 +15,38 @@
         </script>
     </jsp:attribute>
     <jsp:body>
-        <h2><c:if test="${booking['new']}">New </c:if>Booking</h2>
-
+        <h2><c:if test="${booking['new']}"><spring:message code="new" />&nbsp; </c:if><spring:message code="booking" /></h2>
+		
+		<spring:message code="startdate" var="startdate"/>
+		<spring:message code="enddate" var="enddate"/>
+		<spring:message code="pet" var="pet"/>
+		
         <form:form modelAttribute="booking" class="form-horizontal">
             <div class="form-group has-feedback">
-                <petclinic:inputField label="Start Date" name="startDate"/>
-                <petclinic:inputField label="End Date" name="endDate"/>
+                <petclinic:inputField label="${startdate}" name="startDate"/>
+                <petclinic:inputField label="${enddate}" name="endDate"/>
                 <div class="control-group">
-                    <petclinic:selectField name="pet.name" label="Pet " names="${petsNames}" size="5"/>
+                    <petclinic:selectField name="pet.name" label="${pet} " names="${petsNames}" size="5"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <input type="hidden" name="petId" value="${booking.pet.id}"/>
-                    <button class="btn btn-default" type="submit">Add booking</button>
+                    <button class="btn btn-default" type="submit"><spring:message code="addbooking" /></button>
                 </div>
             </div>
         </form:form>
 
         <br/>
-        <b>Previous bookings</b>
+        <b><spring:message code="previousbookings" /></b>
         <table id="bookingsTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Start Date</th>
-            <th style="width: 150px;">End Date</th>
-            <th style="width: 80px">Room</th>
-            <th style="width: 80px">Pet</th>
+            <th style="width: 150px;"><spring:message code="startdate" /></th>
+            <th style="width: 150px;"><spring:message code="enddate" /></th>
+            <th style="width: 80px"><spring:message code="room" /></th>
+            <th style="width: 80px"><spring:message code="pet" /></th>
         </tr>
         </thead>
         <tbody>

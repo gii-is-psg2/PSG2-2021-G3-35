@@ -6,14 +6,14 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="bookings">
-    <h2>Bookings</h2>
+    <h2><spring:message code="bookings" /></h2>
 
     <table id="bookingsTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Start Date</th>
-            <th style="width: 200px;">End Date</th>
-            <th style="width: 120px">Pet</th>
+            <th style="width: 150px;"><spring:message code="startdate" /></th>
+            <th style="width: 200px;"><spring:message code="enddate" /></th>
+            <th style="width: 120px"><spring:message code="pet" /></th>
         </tr>
         </thead>
         <tbody>

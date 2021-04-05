@@ -99,9 +99,11 @@ public class PetController {
 	}
 
 	@PostMapping(value = "/pets/new")
-	public String processCreationForm(final Owner owner, @Valid final Pet pet, final BindingResult result, final ModelMap model) {		
+	public String processCreationForm(final Owner owner, @Valid final Pet pet, final BindingResult result, final ModelMap model,final RedirectAttributes redirectAttributes) {		
 		if (result.hasErrors()) {
 			model.put("pet", pet);
+			redirectAttributes.addFlashAttribute("message", "addpeterror");
+
 			return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
@@ -112,6 +114,8 @@ public class PetController {
                         result.rejectValue("name", "duplicate", "already exists");
                         return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
                     }
+        			redirectAttributes.addFlashAttribute("message", "addpetsuccess");
+
                     return "redirect:/owners/{ownerId}";
 		}
 	}
@@ -134,9 +138,12 @@ public class PetController {
      * @return
      */
         @PostMapping(value = "/pets/{petId}/edit")
-	public String processUpdateForm(@Valid final Pet pet, final BindingResult result, final Owner owner,@PathVariable("petId") final int petId, final ModelMap model) {
+	public String processUpdateForm(@Valid final Pet pet, final BindingResult result, final Owner owner,@PathVariable("petId") final int petId, final ModelMap model
+		,final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			model.put("pet", pet);
+			redirectAttributes.addFlashAttribute("message", "editpeterror");
+
 			return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
@@ -148,6 +155,7 @@ public class PetController {
                         result.rejectValue("name", "duplicate", "already exists");
                         return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
                     }
+        	redirectAttributes.addFlashAttribute("message", "editpetsuccess");
 			return "redirect:/owners/{ownerId}";
 		}
 	}
