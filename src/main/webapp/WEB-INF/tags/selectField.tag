@@ -1,3 +1,4 @@
+
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -9,6 +10,7 @@
               description="Names in the list" %>
 <%@ attribute name="size" required="true" rtexprvalue="true"
               description="Size of Select" %>
+
 
 <spring:bind path="${name}">
     <c:set var="cssGroup" value="form-group ${status.error ? 'error' : '' }"/>

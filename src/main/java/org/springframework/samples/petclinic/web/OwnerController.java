@@ -25,6 +25,7 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,6 +49,10 @@ public class OwnerController {
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
 	private final OwnerService ownerService;
+	
+	@Autowired
+	UserService userService;
+	
 
 	@Autowired
 	public OwnerController(final OwnerService ownerService, final UserService userService, final AuthoritiesService authoritiesService) {
@@ -67,12 +72,16 @@ public class OwnerController {
 	}
 
 	@PostMapping(value = "/owners/new")
-	public String processCreationForm(@Valid final Owner owner, final BindingResult result) {
+	public String processCreationForm(@Valid final Owner owner, final BindingResult result,final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
+			redirectAttributes.addFlashAttribute("message", "addownererror");
+
 			return OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
 			//creating owner, user and authorities
+			redirectAttributes.addFlashAttribute("message", "addownersuccess");
+
 			this.ownerService.saveOwner(owner);
 			
 			return "redirect:/owners/" + owner.getId();
@@ -121,13 +130,16 @@ public class OwnerController {
 
 	@PostMapping(value = "/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid final Owner owner, final BindingResult result,
-			@PathVariable("ownerId") final int ownerId) {
+			@PathVariable("ownerId") final int ownerId, final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
+			redirectAttributes.addFlashAttribute("message", "editownererror");
 			return OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
 			owner.setId(ownerId);
 			this.ownerService.saveOwner(owner);
+			redirectAttributes.addFlashAttribute("message", "editownersuccess");
+			
 			return "redirect:/owners/{ownerId}";
 		}
 	}
@@ -145,14 +157,16 @@ public class OwnerController {
 	}
 	
 	@GetMapping("/owners/{ownerId}/delete")
+	@PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSameOwner.hasPermission(#ownerId)")
 	public String deleteOwner(@PathVariable("ownerId") final int ownerId, final RedirectAttributes redirectAttributes) {
-		Owner result = this.ownerService.deleteOwnerById(ownerId);
+		final Owner result = this.ownerService.deleteOwnerById(ownerId);
 		if (result==null) {
-			redirectAttributes.addFlashAttribute("message", "The owner you are trying to delete doesn't exist.");
+			redirectAttributes.addFlashAttribute("message", "deleteownererror");
 		}
 		else {
+			this.userService.deleteUserByName(result.getUser().getUsername());
+			redirectAttributes.addFlashAttribute("message", "deleteownersuccess");
 			
-			redirectAttributes.addFlashAttribute("message", "Owner "+result.getFirstName()+" "+result.getLastName()+" deleted.");
 		}
 		return "redirect:/owners?lastName=";
 	}

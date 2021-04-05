@@ -9,12 +9,6 @@
 
 
 <petclinic:layout pageName="vets">
-
-<!DOCTYPE html>
-		<html>
-			<head>
-				<link rel="stylesheet" href="/resources/css/CSS.css">
-			</head>
  
     <h2><spring:message code="veterinarians"/></h2>
 
@@ -38,9 +32,11 @@
                 </td>
                 <td>
                     <c:forEach var="specialty" items="${vet.specialties}">
-                        <c:out value="${specialty.name} "/>
+                    	<spring:message code="${specialty.name}" var="specialty"/>
+                    	
+                        <c:out value="${specialty} "/>
                     </c:forEach>
-                    <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
+                    <c:if test="${vet.nrOfSpecialties == 0}"><spring:message code="ninguna"/></c:if>
                 </td>
               
                 <sec:authorize access="hasAuthority('admin')">
@@ -65,7 +61,17 @@
         </tbody>
     </table>
 
-    <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
+    <table class="table-buttons" style="float:left">
+        <tr>
+        	<sec:authorize access="hasAuthority('admin')">
+        	<td style="width: 80px;">
+        		<a class="btn btn-default"  href='<spring:url value="/vets/new" htmlEscape="true"/>'><spring:message code="addvet"/></a>
+            </td>
+            </sec:authorize>
+            <td>
+                <a href="<spring:url value="/vets.xml" htmlEscape="true" />"><spring:message code="viewasxml"/></a>
+            </td>    
+        </tr>
+    </table>
          
-    </html>
 </petclinic:layout>

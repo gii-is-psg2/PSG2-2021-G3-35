@@ -12,7 +12,10 @@ import org.springframework.samples.petclinic.model.Booking;
 public interface BookingRepository extends CrudRepository<Booking, Integer>{
 	
 	
-	@Query("SELECT booking.room FROM Booking booking WHERE booking.startDate <=:startDate and booking.endDate >=:endDate")
+	@Query("SELECT booking.room FROM Booking booking WHERE (booking.startDate <=:startDate and booking.endDate >=:startDate) "
+															+ "or (booking.startDate <=:endDate and booking.endDate >=:endDate)"
+															+ "or (booking.startDate >=:startDate and booking.endDate <=:endDate)"
+															+ "or (booking.startDate <=:startDate and booking.endDate >=:endDate)")
 	public Collection<Integer> findUsedRooms(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
 	

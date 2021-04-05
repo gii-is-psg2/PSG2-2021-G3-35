@@ -29,8 +29,8 @@ public class BookingServiceTests {
 		final Pet pet7 = this.petService.findPetById(7);
 		final Booking booking = new Booking();
 		booking.setPet(pet7);
-		booking.setStartDate(LocalDate.of(2021, 03, 24));
-		booking.setEndDate(LocalDate.of(2021, 03, 26));
+		booking.setStartDate(LocalDate.now().plusDays(2));
+		booking.setEndDate(LocalDate.now().plusDays(10));
 		booking.setRoom(20);
 		try {
 			this.bookingService.saveBooking(booking);

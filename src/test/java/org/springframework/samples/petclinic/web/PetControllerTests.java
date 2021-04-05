@@ -152,7 +152,7 @@ class PetControllerTests {
     @Test
 	void testDeletePet() throws Exception {
 		mockMvc.perform(get("/owners/1/pets/1/delete")).andExpect(status().is3xxRedirection())
-				.andExpect(flash().attribute("message", "Pet Leo deleted."))
+				.andExpect(flash().attribute("message", "deletepetsuccess"))
 				.andExpect(view().name("redirect:/owners/1"));
 			
 	}

@@ -80,6 +80,17 @@ public class PetService {
 	}
 	
 	@Transactional
+	public Visit deleteVisitById(final int id) throws DataAccessException {
+		final Visit visit = this.visitRepository.findById(id);
+    	if(visit==null)
+    		return null;
+    	else {
+    		this.visitRepository.deleteById(id);
+			return visit;
+    	}
+	}
+	
+	@Transactional
 	public Pet deletePetById(final int id) throws DataAccessException {
 		final Pet pet = this.findPetById(id);
     	if(pet==null)
@@ -90,5 +101,7 @@ public class PetService {
     	}
     		
 	}
+	
+	
 
 }

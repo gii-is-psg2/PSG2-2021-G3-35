@@ -202,7 +202,7 @@ class OwnerControllerTests {
 	@Test
 	void testDeleteOwner() throws Exception {
 		mockMvc.perform(get("/owners/{ownerId}/delete", TEST_OWNER_ID)).andExpect(status().is3xxRedirection())
-				.andExpect(flash().attribute("message", "Owner George Franklin deleted."))
+				.andExpect(flash().attribute("message", "deleteownersuccess"))
 				.andExpect(view().name("redirect:/owners?lastName="));
 			
 	}

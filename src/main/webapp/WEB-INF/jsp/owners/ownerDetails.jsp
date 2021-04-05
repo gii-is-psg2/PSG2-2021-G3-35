@@ -4,14 +4,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 
 <petclinic:layout pageName="owners">
-<!DOCTYPE html>
-		<html>
-			<head>
-				<link rel="stylesheet" href="/resources/css/CSS.css">
-			</head>
+
 
     <h2><spring:message code="ownerin"/></h2>
 
@@ -40,12 +37,12 @@
 
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default"><spring:message code="editowner"/></a>
 
- 
+ <sec:authorize access="hasAuthority('admin') || @isSameOwner.hasPermission(#ownerId)">
     <spring:url value="{ownerId}/delete" var="deleteUrl">
         <spring:param name="ownerId" value="${owner.id}"/>
     </spring:url>
-    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete Owner</a>
-    
+    <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default"><spring:message code="deleteowner"/></a>
+ </sec:authorize>   
     <spring:url value="{ownerId}/pets/new" var="addUrl">
         <spring:param name="ownerId" value="${owner.id}"/>
     </spring:url>
@@ -67,7 +64,8 @@
                         <dt><spring:message code="birth"/></dt>
                         <dd><petclinic:localDate date="${pet.birthDate}" pattern="yyyy-MM-dd"/></dd>
                         <dt><spring:message code="type"/></dt>
-                        <dd><c:out value="${pet.type.name}"/></dd>
+                        <spring:message code="${pet.type.name}" var="pettype"/>
+                        <dd><c:out value="${pettype}"/></dd>
                     </dl>
                 </td>
                 <td valign="top">
@@ -82,6 +80,14 @@
                             <tr>
                                 <td><petclinic:localDate date="${visit.date}" pattern="yyyy-MM-dd"/></td>
                                 <td><c:out value="${visit.description}"/></td>
+                                
+                                <td><spring:url value="/owners/{ownerId}/visits/{visitId}/delete" var="visitDeleteUrl">
+                                    
+                                    <spring:param name="ownerId" value="${owner.id}"/>
+                                    <spring:param name="visitId" value="${visit.id}"/>
+                                </spring:url>
+                                <a style="color:gray" href="${fn:escapeXml(visitDeleteUrl)}"><spring:message code="deletevisit"/></a>
+                                </td>
                             </tr>
                         </c:forEach>
                         <tr>
@@ -92,13 +98,15 @@
                                 </spring:url>
                                 <a href="${fn:escapeXml(petUrl)}"><spring:message code="editpet"/></a>
                             </td>
+                            <sec:authorize access="hasAuthority('admin') || hasAuthority('owner') && @isSamePetOwner.hasPermission(${pet.id})">
                             <td>
                                 <spring:url value="/owners/{ownerId}/pets/{petId}/delete" var="petUrl">
                                     <spring:param name="ownerId" value="${owner.id}"/>
                                     <spring:param name="petId" value="${pet.id}"/>
                                 </spring:url>
-                                <a href="${fn:escapeXml(petUrl)}">Delete Pet</a>
+                                <a href="${fn:escapeXml(petUrl)}"><spring:message code="deletepet"/></a>
                             </td>
+                            </sec:authorize>
                             <td>
                                 <spring:url value="/owners/{ownerId}/pets/{petId}/visits/new" var="visitUrl">
                                     <spring:param name="ownerId" value="${owner.id}"/>
@@ -106,6 +114,7 @@
                                 </spring:url>
                                 <a href="${fn:escapeXml(visitUrl)}"><spring:message code="addvisit"/></a>
                             </td>
+                            
                         </tr>
                     </table>
                 </td>
@@ -114,15 +123,15 @@
         </c:forEach>
     </table>
       
-    <h2>Bookings</h2>
+    <h2><spring:message code="bookings"/></h2>
 	  
     <table id="bookingsTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 120px;">Start Date</th>
-            <th style="width: 120px;">End Date</th>
-            <th style="width: 100px">Room</th>
-            <th style="width: 140px">Pet</th>
+            <th style="width: 120px;"><spring:message code="startdate"/></th>
+            <th style="width: 120px;"><spring:message code="enddate"/></th>
+            <th style="width: 100px"><spring:message code="room"/></th>
+            <th style="width: 140px"><spring:message code="pet"/></th>
             <th style="width: 30px"></th>
         </tr>
         </thead>
@@ -144,11 +153,13 @@
                     <c:out value="${booking.pet.name}"/>
                 </td>
                 <td>
+                <sec:authorize access="hasAuthority('admin') || @isSameOwner.hasPermission(#ownerId)">
                     <spring:url value="/owners/{ownerId}/bookings/{bookingId}/delete" var="deleteUrl">
 						<spring:param name="ownerId" value="${owner.id}"/>
 						<spring:param name="bookingId" value="${booking.id}"/>
 					</spring:url>
                     <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash btn btn-danger"></a>
+                </sec:authorize>
                 </td>
               
             </tr>
@@ -159,7 +170,6 @@
     <spring:url value="/owners/{ownerId}/bookings/new" var="newBookingUrl">
     	<spring:param name="ownerId" value="${owner.id}"/>
     </spring:url>
-    <a href="${fn:escapeXml(newBookingUrl)}" class="btn btn-default">New Booking</a>
+    <a href="${fn:escapeXml(newBookingUrl)}" class="btn btn-default"><spring:message code="new"/> &nbsp;<spring:message code="booking"/></a>
     
-  </html>
 </petclinic:layout>
