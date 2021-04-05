@@ -43,15 +43,6 @@
       </roles>
     </developer>
     <developer>
-      <id>serrojjim</id>
-      <name>Sergio Rojas Jimenez</name>
-      <email>serrojjim@alum.us.es</email>
-      <organization>US</organization>
-      <roles>
-        <role>developer</role>
-      </roles>
-    </developer>
-    <developer>
       <id>felconmar</id>
       <name>Félix Conde Marrón</name>
       <email>felconmar@alum.us.es</email>
@@ -192,11 +183,11 @@
             <artifactId>junit</artifactId>
             <groupId>junit</groupId>
         </dependency>
-        <!-- Development tools>
+        <!-- Development tools> -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-        </dependency -->
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>

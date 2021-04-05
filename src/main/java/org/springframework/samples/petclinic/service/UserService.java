@@ -22,6 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.repository.UserRepository;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,20 +38,47 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
-	public UserService(UserRepository userRepository) {
+	public UserService(final UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
 	@Transactional
-	public void saveUser(User user) throws DataAccessException {
+	public void saveUser(final User user) throws DataAccessException {
 		user.setEnabled(true);
-		userRepository.save(user);
+		this.userRepository.save(user);
 	}
 	
-	public Optional<User> findUser(String username) {
-		return userRepository.findById(username);
+	public Optional<User> findUser(final String username) {
+		return this.userRepository.findById(username);
+	}
+
+	/* Devuelve el usuario logueado */
+	public User getPrincipal() {
+		User res = null;
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(!(auth instanceof AnonymousAuthenticationToken)) {
+			final UserDetails userDetail = (UserDetails) auth.getPrincipal();
+			final Optional<User> currentUser = this.findUser(userDetail.getUsername());
+			
+			if(currentUser.isPresent()) {
+				res = currentUser.get();
+			}
+		}
+		
+		return res;
+	}
+	
+	@Transactional
+	public User deleteUserByName(final String name) throws DataAccessException {
+		final User user = this.findUser(name).get();
+    	if(user==null)
+    		return null;
+    	else {
+    		this.userRepository.deleteByName(name);
+			return user;
+    	}
 	}
 }

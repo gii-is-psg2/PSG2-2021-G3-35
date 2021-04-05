@@ -15,31 +15,19 @@
  */
 package org.springframework.samples.petclinic.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Optional;
+import java.util.Set;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
-import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.model.User;
-import org.springframework.samples.petclinic.model.Authorities;
-import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -80,14 +68,76 @@ class VetServiceTests {
 
 	@Test
 	void shouldFindVets() {
-		Collection<Vet> vets = this.vetService.findVets();
+		final Collection<Vet> vets = this.vetService.findVets();
 
-		Vet vet = EntityUtils.getById(vets, Vet.class, 3);
-		assertThat(vet.getLastName()).isEqualTo("Douglas");
-		assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
-		assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
-		assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
+		final Vet vet = EntityUtils.getById(vets, Vet.class, 3);
+		Assertions.assertThat(vet.getLastName()).isEqualTo("Douglas");
+		Assertions.assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
+		Assertions.assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
+		Assertions.assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
+	}
+	
+	@Test
+	@Transactional
+	void shouldFindVetById() {
+		Optional<Vet> vet = this.vetService.findVetById(1);
+		
+		Assertions.assertThat(vet).isPresent();
+		Assertions.assertThat(vet.get().getFirstName()).isEqualTo("James");
+		Assertions.assertThat(vet.get().getLastName()).isEqualTo("Carter");
+	}
+	
+	@Test
+	@Transactional
+	void shouldSaveVet() {
+		Vet vet = this.vetService.findVetById(1).get();
+		vet.setLastName("Rogers");
+		
+		this.vetService.saveVet(vet);
+		
+		Vet saveVet = this.vetService.findVetById(1).get();
+		Assertions.assertThat(saveVet.getFirstName()).isEqualTo("James");
+		Assertions.assertThat(saveVet.getLastName()).isEqualTo("Rogers");
+	}
+	
+	@Test
+	@Transactional
+	void shouldDeleteVet() {
+		final Vet result = this.vetService.deleteVetById(1);
+		Assertions.assertThat(result).isNotNull();
+	}
+	
+	@Test
+	@Transactional
+	void shouldNotDeleteVet() {
+		final Vet result = this.vetService.deleteVetById(122);
+		Assertions.assertThat(result).isNull();
+	}
+	
+	@Test
+	@Transactional
+	void shouldFindSpecialties() {
+		Set<Specialty> specialties = this.vetService.findSpecialties();
+		
+		Assertions.assertThat(specialties).isNotEmpty();
+		Assertions.assertThat(specialties.size()).isEqualTo(3);
+	}
+	
+	@Test
+	@Transactional
+	void shouldFindSpecialtyByName() {
+		Specialty specialty = this.vetService.findSpecialtyByName("radiology");
+		
+		Assertions.assertThat(specialty.getName()).isEqualTo("radiology");
 	}
 
+	@Test
+	@Transactional
+	void shouldAddSpecialties() {
+		Set<Specialty> specialties = this.vetService.findSpecialties();
+		
+		Assertions.assertThat(specialties).isNotEmpty();
+		Assertions.assertThat(specialties.size()).isEqualTo(3);
+	}
 
 }

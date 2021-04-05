@@ -15,7 +15,7 @@
  */
 package org.springframework.samples.petclinic.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,9 +23,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -54,6 +55,7 @@ public class Visit extends BaseEntity {
 	 * Holds value of property pet.
 	 */
 	@ManyToOne
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "pet_id")
 	private Pet pet;
 
@@ -76,7 +78,7 @@ public class Visit extends BaseEntity {
 	 * Setter for property date.
 	 * @param date New value of property date.
 	 */
-	public void setDate(LocalDate date) {
+	public void setDate(final LocalDate date) {
 		this.date = date;
 	}
 
@@ -92,7 +94,7 @@ public class Visit extends BaseEntity {
 	 * Setter for property description.
 	 * @param description New value of property description.
 	 */
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -108,7 +110,7 @@ public class Visit extends BaseEntity {
 	 * Setter for property pet.
 	 * @param pet New value of property pet.
 	 */
-	public void setPet(Pet pet) {
+	public void setPet(final Pet pet) {
 		this.pet = pet;
 	}
 
