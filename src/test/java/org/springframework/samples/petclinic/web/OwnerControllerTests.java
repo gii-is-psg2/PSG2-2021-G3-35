@@ -21,6 +21,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.OwnerService;
@@ -73,6 +74,11 @@ class OwnerControllerTests {
 		george.setAddress("110 W. Liberty St.");
 		george.setCity("Madison");
 		george.setTelephone("6085551023");
+		
+		User user = new User();
+		user.setUsername("geoge");
+		george.setUser(user);
+		
 		given(this.ownerService.findOwnerById(TEST_OWNER_ID)).willReturn(george);
 		given(this.ownerService.deleteOwnerById(TEST_OWNER_ID)).willReturn(george);
 
