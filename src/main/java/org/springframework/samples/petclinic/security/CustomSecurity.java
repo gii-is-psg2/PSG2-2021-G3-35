@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.PetitionService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +28,9 @@ public class CustomSecurity {
 	
 	@Autowired
 	BookingService bookingService;
+	
+	@Autowired
+	PetitionService petitionService;
 	
 	@Component("isSameOwner")
 	public class IsSameOwner {
@@ -51,6 +55,23 @@ public class CustomSecurity {
 	    public boolean hasPermission(final int id) {
 	    	try {
 	    	final String userOfDeletion= CustomSecurity.this.bookingService.findBookingById(id).getPet().getOwner().getUser().getUsername();
+	    	final String userAuth = SecurityContextHolder.getContext().getAuthentication().getName();
+	        return userOfDeletion.equals(userAuth);
+	        
+	    	}catch(final Exception e) {
+	    		return false;
+	    	}
+	    }
+	    
+	    
+	}
+	
+	@Component("isSamePetitionOwner")
+	public class IsSamePetitionOwner {
+		
+	    public boolean hasPermission(final int id) {
+	    	try {
+	    	final String userOfDeletion= CustomSecurity.this.petitionService.findPetitionById(id).getApplicant().getUsername();
 	    	final String userAuth = SecurityContextHolder.getContext().getAuthentication().getName();
 	        return userOfDeletion.equals(userAuth);
 	        

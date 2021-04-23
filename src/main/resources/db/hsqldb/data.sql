@@ -36,6 +36,11 @@ INSERT INTO authorities(id,username,authority) VALUES (11,'owner10','owner');
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (12,'vet1','veterinarian');
 
+INSERT INTO petitions(description, status,applicant) VALUES ('PRUEBA1','1','admin1');
+INSERT INTO petitions(description, status,applicant) VALUES ('PRUEBA12','0','admin1');
+INSERT INTO petitions(description, status,applicant) VALUES ('PRUEBA13','2','admin1');
+
+
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
