@@ -11,8 +11,8 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.exceptions.AllRoomsBookedException;
+import org.springframework.samples.petclinic.service.exceptions.RoomAlreadyBookedForPet;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,17 +29,13 @@ public class BookingController {
 
 	
 	private final BookingService bookingService;
-	private final PetService petService;
 	private final OwnerService ownerService;
 	private static final String VISTA_EDICION_BOOKING= "bookings/createOrUpdateBookingForm";
-	private static final String VIEW_LIST_BOOKING="bookings/bookingsList";
-	private static final String VIEW_SHOW_BOOKING="bookings/editChapter";
 	
 	@Autowired
-	public BookingController(final BookingService bookingService, final PetService petService, final OwnerService ownerService) {
+	public BookingController(final BookingService bookingService, final OwnerService ownerService) {
 
 		this.bookingService = bookingService;
-		this.petService = petService;
 		this.ownerService = ownerService;
 	}
 //	
@@ -48,6 +44,11 @@ public class BookingController {
 // 		dataBinder.setDisallowedFields("id");
 // 	}
 //			
+	
+	
+	private List<String> getPetsNames(Owner owner) {
+		return owner.getPets().stream().map(p->p.getName()).collect(Collectors.toList());
+	}
 	
 	// Crear reserva
 	
@@ -75,10 +76,9 @@ public class BookingController {
 		final Owner owner = this.ownerService.findOwnerById(ownerId);
 		// Si al validarlo, encontramos errores:
 		if(result.hasErrors()) {
-			final List<String> petsNames = owner.getPets().stream().map(p->p.getName()).collect(Collectors.toList());
 			modelMap.put("booking", booking);
 			modelMap.put("owner", owner);
-			modelMap.put("petsNames", petsNames);
+			modelMap.put("petsNames", getPetsNames(owner));
 			return BookingController.VISTA_EDICION_BOOKING;
 		}
 		
@@ -104,7 +104,16 @@ public class BookingController {
 				redirectAttributes.addFlashAttribute("messageType", "success");
 				return "redirect:/owners/{ownerId}";
 			} catch (final AllRoomsBookedException e) {
-				result.rejectValue("text", "AllRoomsBooked" ,"All our rooms are booked. Please try to book later.");
+				modelMap.put("booking", booking);
+				modelMap.put("owner", owner);
+				modelMap.put("petsNames", getPetsNames(owner));
+				result.rejectValue("startDate", "AllRoomsBooked" ,"All our rooms are booked. Please try to book later.");
+				return BookingController.VISTA_EDICION_BOOKING;
+			} catch(RoomAlreadyBookedForPet e) {
+				modelMap.put("booking", booking);
+				modelMap.put("owner", owner);
+				modelMap.put("petsNames", getPetsNames(owner));
+				result.rejectValue("pet.name", "RoomAlreadyBookedForPet" ,"You have rooms already booked for this pet.");
 				return BookingController.VISTA_EDICION_BOOKING;
 			}
 			

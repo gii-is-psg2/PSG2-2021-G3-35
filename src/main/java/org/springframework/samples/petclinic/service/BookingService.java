@@ -2,12 +2,13 @@ package org.springframework.samples.petclinic.service;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
-import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.BookingRepository;
 import org.springframework.samples.petclinic.service.exceptions.AllRoomsBookedException;
+import org.springframework.samples.petclinic.service.exceptions.RoomAlreadyBookedForPet;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,23 +17,21 @@ public class BookingService {
 
 	private final BookingRepository bookingRepository;
 
-	private final OwnerService ownerService;
 
-	private final PetService petService;
 
 	@Autowired
-	public BookingService(final BookingRepository bookingRepository, final OwnerService ownerService,
-			final PetService petService) {
+	public BookingService(final BookingRepository bookingRepository) {
 		this.bookingRepository = bookingRepository;
-		this.ownerService = ownerService;
-		this.petService = petService;
 	}
 
-	@Transactional
-	public void saveBooking(final Booking booking) throws AllRoomsBookedException {
-		Collection<Integer> usedRooms = this.bookingRepository.findUsedRooms(booking.getStartDate(),
-				booking.getEndDate());
+	@Transactional(rollbackFor = RoomAlreadyBookedForPet.class)
+	public void saveBooking(final Booking booking) throws AllRoomsBookedException, RoomAlreadyBookedForPet {
+		Collection<Booking> usedRoomsBookings = this.bookingRepository.findUsedRooms(booking.getStartDate(), booking.getEndDate());
+		Collection<Integer> usedRooms = usedRoomsBookings.stream().map(b->b.getRoom()).collect(Collectors.toList());
 		if (usedRooms.size() < 20) {
+			System.out.println("=========================================================");
+			System.out.println(usedRoomsBookings.stream().anyMatch(b->b.getPet().getId().equals(booking.getPet().getId())));
+			if (!usedRoomsBookings.stream().anyMatch(b->b.getPet().getId().equals(booking.getPet().getId()))) {
 			Boolean aux = true;
 			int possibleRoom = 1;
 			while (aux) {
@@ -43,12 +42,12 @@ public class BookingService {
 			}
 			booking.setRoom(possibleRoom);
 			this.bookingRepository.save(booking);
+			} else 
+				throw new RoomAlreadyBookedForPet();
 		} else
 			throw new AllRoomsBookedException();
 	}
 
-	// No he conseguido que borre, no me da error aparentemente así que no entiendo
-	// bien el problema
 	@Transactional
 	public Booking deleteBooking(final int bookingId) {
 		final Booking booking = this.findBookingById(bookingId);
@@ -66,11 +65,10 @@ public class BookingService {
 	}
 
 	public Booking createBooking() {
-		final Booking res = new Booking();
-		return res;
+		return new Booking();
 	}
 
-	public Collection<Integer> findUsedRooms(final LocalDate startDate, final LocalDate endDate) {
+	public Collection<Booking> findUsedRooms(final LocalDate startDate, final LocalDate endDate) {
 
 		return this.bookingRepository.findUsedRooms(startDate, endDate);
 	}
