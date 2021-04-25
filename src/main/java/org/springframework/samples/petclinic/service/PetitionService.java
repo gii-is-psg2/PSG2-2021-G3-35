@@ -41,7 +41,7 @@ public class PetitionService {
 	}
 
 	public Iterable<Petition> findMyPetitions(final String username) {
-		return this.petitionRepository.findPetitionsByUser(username);
+		return this.petitionRepository.findPetitionsByOwner(username);
 
 	}
 

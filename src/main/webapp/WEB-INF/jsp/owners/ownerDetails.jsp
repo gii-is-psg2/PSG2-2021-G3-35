@@ -172,4 +172,63 @@
     </spring:url>
     <a href="${fn:escapeXml(newBookingUrl)}" class="btn btn-default"><spring:message code="new"/> &nbsp;<spring:message code="booking"/></a>
     
+    <br>
+    <br>
+    <!--  adoptions  -->
+    
+    
+    <h2><spring:message code="adoptions"/></h2>
+    
+    <table id="adoptionsTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th><spring:message code="adoption_offer"/></th>
+            <th style="width: 150px;"><spring:message code="pet"/></th>
+            <th><spring:message code="type"/></th>
+            <th><spring:message code="owner"/></th>
+            <th><spring:message code="publishdate"/></th>
+            <th style="width: 100px;"><spring:message code="adoption_status"/></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${adoptions}" var="adoption">
+            <tr>
+                <td>
+                    <spring:url value="/adoptions/${adoption.id}" var="adoptionUrl"/>
+                    <a href="${fn:escapeXml(adoptionUrl)}"><c:out value="${adoption.title}"/></a>
+                </td>
+                <td>
+                    <c:out value="${adoption.pet}"/>
+                </td>
+                <td>
+                    <c:out value="${adoption.pet.type}"/>
+                </td>
+                <td>
+                  <a href="/owners/${adoption.owner.id}">
+                  <c:out value="${adoption.owner.firstName} ${adoption.owner.lastName}"/>
+                  </a>  
+                </td>
+                <td>
+                  
+                  <c:out value="${adoption.publishDate}"/>
+               
+                </td>
+                <td>
+                <c:choose>
+                <c:when test= "${adoption.open}">
+                    <span style="color: yellow"><spring:message code="open"/></span>
+                </c:when>
+                <c:otherwise>
+                	<span style="color: red"><spring:message code="closed"/></span>
+                 </c:otherwise>
+                 </c:choose>
+                </td>
+                
+
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    
+    
 </petclinic:layout>

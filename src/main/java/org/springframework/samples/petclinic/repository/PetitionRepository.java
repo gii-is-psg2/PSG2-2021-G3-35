@@ -14,8 +14,8 @@ public interface PetitionRepository extends CrudRepository<Petition, Integer>{
 	@Query("SELECT petition FROM Petition petition WHERE petition.id =:petitionID")
 	public Petition findPetitionById(@Param("petitionID")int petitionID);
 
-	@Query("SELECT petition FROM Petition petition WHERE petition.applicant.username =:username")
-	public Iterable<Petition> findPetitionsByUser(@Param("username")String username);
+	@Query("SELECT petition FROM Petition petition WHERE petition.applicant.id =:id")
+	public Iterable<Petition> findPetitionsByOwner(@Param("id")String id);
 	
 
 }

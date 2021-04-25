@@ -14,13 +14,16 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
 
 @Entity
+@Getter
+@Setter
 @Table(name = "Petitions")
-public @Data class Petition extends BaseEntity{
+public class Petition extends BaseEntity{
 
 	@NotEmpty
 	@Column(name = "description")
@@ -30,12 +33,12 @@ public @Data class Petition extends BaseEntity{
 	@ManyToOne(optional=false, cascade = CascadeType.ALL)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "applicant")
-	private User applicant;	
+	private Owner applicant;	
 	
-//	@ManyToOne(optional=false, cascade = CascadeType.ALL)
-//	@OnDelete(action = OnDeleteAction.CASCADE)
-//	@JoinColumn(name = "adopcion")
-//	private Adopcion adopcion;	
+	@ManyToOne(optional=false, cascade = CascadeType.ALL)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JoinColumn(name = "adoption")
+	private Adoption adoption;	
 	
 	@NotNull
 	@Column(name = "status")

@@ -71,7 +71,7 @@ public class CustomSecurity {
 		
 	    public boolean hasPermission(final int id) {
 	    	try {
-	    	final String userOfDeletion= CustomSecurity.this.petitionService.findPetitionById(id).getApplicant().getUsername();
+	    	final String userOfDeletion= CustomSecurity.this.petitionService.findPetitionById(id).getApplicant().getUser().getUsername();
 	    	final String userAuth = SecurityContextHolder.getContext().getAuthentication().getName();
 	        return userOfDeletion.equals(userAuth);
 	        
