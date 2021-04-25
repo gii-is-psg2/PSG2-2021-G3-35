@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.samples.petclinic.service.AdoptionService;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
@@ -31,6 +32,9 @@ public class CustomSecurity {
 	
 	@Autowired
 	PetitionService petitionService;
+	
+	@Autowired
+	AdoptionService adoptionService;
 	
 	@Component("isSameOwner")
 	public class IsSameOwner {
@@ -99,6 +103,21 @@ public class CustomSecurity {
 	    }
 	}
 	
+	@Component("isSameAdoptionOwner")
+	public class IsSameAdoptionOwner{
+		
+		public boolean hasPermission(final int id) {
+			
+			try {
+			final String userOfDeletion = CustomSecurity.this.adoptionService.getById(id).getOwner().getUser().getUsername();
+			final String userAuth = SecurityContextHolder.getContext().getAuthentication().getName();
+			return userOfDeletion.equals(userAuth);
+				
+			}catch(final Exception e) {
+				return false;
+			}
+		}
 	
+	}
 
 }

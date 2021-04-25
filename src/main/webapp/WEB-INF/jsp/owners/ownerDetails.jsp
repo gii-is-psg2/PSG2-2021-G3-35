@@ -200,9 +200,8 @@
                 <td>
                     <c:out value="${adoption.pet}"/>
                 </td>
-                <td>
-                    <c:out value="${adoption.pet.type}"/>
-                </td>
+                <spring:message code="${adoption.pet.type.name}" var="pettype"/>
+            	<td><c:out value="${pettype}"/></td>
                 <td>
                   <a href="/owners/${adoption.owner.id}">
                   <c:out value="${adoption.owner.firstName} ${adoption.owner.lastName}"/>

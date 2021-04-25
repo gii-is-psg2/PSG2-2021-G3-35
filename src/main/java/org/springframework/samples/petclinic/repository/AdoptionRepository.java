@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +20,8 @@ public interface AdoptionRepository extends Repository<Adoption, Integer> {
 	@Query("SELECT a FROM Adoption a ORDER BY a.open DESC,a.publishDate DESC")
 	public Collection<Adoption> findAll();
 	
+	@Modifying
 	@Query("DELETE FROM Adoption a WHERE a.id =:id")
-	public Collection<Adoption> deleteAdoptionById(@Param ("id") int id);
+	public void deleteAdoptionById(@Param ("id") int id);
 
 }

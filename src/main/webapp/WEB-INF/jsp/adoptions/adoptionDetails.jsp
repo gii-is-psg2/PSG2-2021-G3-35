@@ -27,7 +27,8 @@
         </tr>
         <tr>
             <th><spring:message code="type"/></th>
-            <td><c:out value="${adoption.pet.type}"/></td>
+            <spring:message code="${adoption.pet.type.name}" var="pettype"/>
+            <td><c:out value="${pettype}"/></td>
         </tr>
         
         <tr>
@@ -59,8 +60,10 @@
         
         
     </table>
-    
+
+    <sec:authorize access="hasAuthority('admin') || hasAuthority('owner') && @isSameAdoptionOwner.hasPermission(${adoption.id})">
     <a href="/adoptions/${adoption.id}/delete" class="btn btn-default"><spring:message code="adoption_delete"/></a>
+    </sec:authorize>
     <br>
     <br>
      <h2><spring:message code="petitions"/></h2>

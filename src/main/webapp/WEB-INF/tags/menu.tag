@@ -45,11 +45,11 @@
 					<span>${veterinarians}</span>
 				</petclinic:menuItem>
 				
-				<spring:message code="error" var="error"/>
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
-					title="${error}">
-					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-					<span>${error}</span>
+				<spring:message code="adoptionsmenu" var="adoptionsmenu"/>
+				<petclinic:menuItem active="${name eq 'adoptionsmenu'}" url="/adoptions/all"
+					title="${adoptionsmenu}">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>${adoptionsmenu}</span>
 				</petclinic:menuItem>
 
 			</ul>

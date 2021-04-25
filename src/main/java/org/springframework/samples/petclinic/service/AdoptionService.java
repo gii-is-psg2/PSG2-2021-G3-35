@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Adoption;
 import org.springframework.samples.petclinic.repository.AdoptionRepository;
@@ -23,6 +25,17 @@ public class AdoptionService {
 	
 	public Adoption getById(final int id){
 		return this.adoptionRepository.findById(id);
+	}
+	
+	@Transactional
+	public Adoption deleteAdoption(final int adoptionId) {
+		final Adoption adopt = this.getById(adoptionId);
+		if (adopt == null) {
+			return null;
+		}else {
+		this.adoptionRepository.deleteAdoptionById(adoptionId);
+		return adopt;
+		}
 	}
 	
 }
