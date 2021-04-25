@@ -52,7 +52,7 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 16 (21/4)         |         |                |                |                |                |
 | Day 17 (22/4)         |         |                |                |                |                |
 | Day 18 (23/4)         |         |   :smiley:     |                |                |:smiley:                |
-| Day 19 (24/4)         |   :smiley:        |                |                |                |                |
+| Day 19 (24/4)         |   :smiley:        |                |                |                |:smiley:                |
 | Day 20 (25/4)         |     :smiley:     |                |                |                |                |
 | Day 21 (26/4)         |         |                |                |                |                |
 | Day 22 (27/4)         |         |                |                |                |                |
