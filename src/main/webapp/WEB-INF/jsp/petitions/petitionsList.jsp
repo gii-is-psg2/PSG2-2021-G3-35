@@ -13,7 +13,9 @@
         <tr>
             <th style="width: 150px;"><spring:message code="description" /></th>
             <th style="width: 200px;"><spring:message code="status" /></th>
-            <th style="width: 120px"><spring:message code="username" /></th>
+            <th style="width: 100px"><spring:message code="firstname" /></th>
+			<th style="width: 100px"><spring:message code="lastname" /></th>
+			
         </tr>
         </thead>
         <tbody>
@@ -29,9 +31,11 @@
                     <c:out value="${status}"/>
                 </td>
                 <td>
-                    <c:out value="${petition.applicant.username}"/>
+                    <c:out value="${petition.applicant.firstName}"/>
                 </td>
-          
+          		<td>
+                    <c:out value="${petition.applicant.lastName}"/>
+                </td>
                 
             </tr>
         </c:forEach>

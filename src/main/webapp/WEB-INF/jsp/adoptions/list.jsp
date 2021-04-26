@@ -20,6 +20,7 @@
             <th><spring:message code="owner"/></th>
             <th><spring:message code="publishdate"/></th>
             <th style="width: 100px;"><spring:message code="adoption_status"/></th>
+            <th style="width: 30px;"></th>
         </tr>
         </thead>
         <tbody>
@@ -54,7 +55,19 @@
                  </c:otherwise>
                  </c:choose>
                 </td>
-                
+                <td>
+                <c:choose>
+                <c:when test= "${adoption.open}">
+                    <spring:url value="/adoptions/{adoptionId}/petitions/new" var="makePetition">
+                    <spring:param name="adoptionId" value="${adoption.id}"/>
+					        </spring:url>
+                  	<a href="${makePetition}" class="glyphicon glyphicon-send"/></a>
+                </c:when>
+                <c:otherwise>
+         			
+                 </c:otherwise>
+                 </c:choose>
+                </td>
 
             </tr>
         </c:forEach>

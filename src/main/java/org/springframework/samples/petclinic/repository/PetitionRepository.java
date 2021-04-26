@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.repository;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -15,7 +17,8 @@ public interface PetitionRepository extends CrudRepository<Petition, Integer>{
 	public Petition findPetitionById(@Param("petitionID")int petitionID);
 
 	@Query("SELECT petition FROM Petition petition WHERE petition.applicant.id =:id")
-	public Iterable<Petition> findPetitionsByOwner(@Param("id")String id);
+	public Iterable<Petition> findPetitionsByOwner(@Param("id")int id);
 	
-
+	@Query("SELECT petition FROM Petition petition WHERE petition.adoption.id =:adoptionId")
+	public Collection<Petition> findPetitionsByAdoptionId(@Param("adoptionId")int adoptionId);
 }

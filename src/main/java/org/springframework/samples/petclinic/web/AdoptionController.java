@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Adoption;
 import org.springframework.samples.petclinic.service.AdoptionService;
+import org.springframework.samples.petclinic.service.PetitionService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,6 +23,9 @@ public class AdoptionController {
 	@Autowired
 	AdoptionService adoptionService;
 	
+	@Autowired
+	PetitionService petitionService;
+	
 	@GetMapping("/all")
 	public String showAllAdoptions(final Map<String, Object> model) {
 		model.put("adoptions", this.adoptionService.getAllAdoptions());
@@ -32,6 +36,7 @@ public class AdoptionController {
 	public ModelAndView showAdoptionDetails(@PathVariable("adoptionid") final int adoptionId) {
 		final ModelAndView mav = new ModelAndView("adoptions/adoptionDetails");
 		mav.addObject("adoption", this.adoptionService.getById(adoptionId));
+		mav.addObject("petitions", this.petitionService.findPetitionsByAdoptionId(adoptionId));
 		return mav;
 	}
 	

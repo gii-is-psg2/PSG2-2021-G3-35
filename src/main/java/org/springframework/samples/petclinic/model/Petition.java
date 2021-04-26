@@ -30,12 +30,12 @@ public class Petition extends BaseEntity{
 	private String description;
 	
 
-	@ManyToOne(optional=false, cascade = CascadeType.ALL)
+	@ManyToOne(optional=true, cascade = CascadeType.ALL)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "applicant")
 	private Owner applicant;	
 	
-	@ManyToOne(optional=false, cascade = CascadeType.ALL)
+	@ManyToOne(optional=true, cascade = CascadeType.ALL)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "adoption")
 	private Adoption adoption;	
