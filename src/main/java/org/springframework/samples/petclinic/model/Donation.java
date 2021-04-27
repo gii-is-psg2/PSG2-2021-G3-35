@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.model;
 
 import java.time.LocalDate;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -28,8 +29,8 @@ public class Donation extends BaseEntity{
 	private Owner owner;
 	
 //  Descomentar cuando Cause sea creado
-//	@ManyToOne(optional=false)
-//	@JoinColumn(name = "cause_id")
-//	private Cause cause;
+	@ManyToOne(optional=false)
+	@JoinColumn(name = "cause_id")
+	private Cause cause;
 	
 }
