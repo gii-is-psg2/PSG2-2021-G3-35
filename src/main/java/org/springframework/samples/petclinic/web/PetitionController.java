@@ -1,25 +1,17 @@
 package org.springframework.samples.petclinic.web;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Adoption;
-import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Petition;
 import org.springframework.samples.petclinic.model.PetitionStatus;
 import org.springframework.samples.petclinic.service.AdoptionService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetitionService;
-import org.springframework.samples.petclinic.service.UserService;
-import org.springframework.samples.petclinic.service.exceptions.AllRoomsBookedException;
-import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,36 +27,34 @@ public class PetitionController {
 
 	
 	private final PetitionService petitionService;
-	private final UserService userService;
 	private final AdoptionService adoptionService;
 	private final OwnerService ownerService;
 
 	
 	@Autowired
-	public PetitionController(final PetitionService petitionService, final UserService userService, final AdoptionService adoptionService, final OwnerService ownerService) {
+	public PetitionController(final PetitionService petitionService, final AdoptionService adoptionService, final OwnerService ownerService) {
 
 		this.petitionService = petitionService;
-		this.userService = userService;
 		this.adoptionService = adoptionService;
 		this.ownerService = ownerService;
 	}
 	
 	@GetMapping(value = "/petitions")
-//	@PreAuthorize("authenticated()")
+	@PreAuthorize("hasAuthority('owner')")
 	public String showPetitions(final Map<String, Object> model) {
 		model.put("petitions", this.petitionService.findAll());
 		return "petitions/petitionsList";
 	}
 	
 	@GetMapping(value = "/petitions/mypetitions")
-//	@PreAuthorize("authenticated()")
+	@PreAuthorize("hasAuthority('owner')")
 	public String showMyPetitions(final Map<String, Object> model) {
 		model.put("petitions", this.petitionService.findMyPetitions(this.ownerService.getPrincipal().getId()));
 		return "petitions/myPetitionsList";
 	}
 	
 	@GetMapping(value = "/petitions/mypetitions/{petitionId}/delete")
-	@PreAuthorize("authenticated() && @isSamePetitionOwner.hasPermission(#petitionId)")
+	@PreAuthorize("hasAuthority('owner') && @isSamePetitionOwner.hasPermission(#petitionId)")
 	public String deletePetition(@PathVariable("petitionId") final int petitionId, final ModelMap model, final RedirectAttributes redirectAttributes) {
 			final Petition res = this.petitionService.deletePetition(petitionId);
 			if (res==null) {
@@ -78,7 +68,7 @@ public class PetitionController {
 	
 
 	@GetMapping("/adoptions/{adoptionId}/petitions/new")
-	public String initAddPetition(@PathVariable("adoptionId") final int adoptionId, ModelMap modelMap) {
+	public String initAddPetition(@PathVariable("adoptionId") final int adoptionId, final ModelMap modelMap) {
 		
 		final Petition petition = new Petition();
 		petition.setApplicant(this.ownerService.getPrincipal());
@@ -92,11 +82,12 @@ public class PetitionController {
 	}
 	
 	@PostMapping("/adoptions/{adoptionId}/petitions/new")
+	@PreAuthorize("hasAuthority('owner')")
 	public String processNewPetition(@PathVariable("adoptionId") final int adoptionId, @Valid final Petition petition, final BindingResult result,
 			final ModelMap modelMap, final RedirectAttributes redirectAttributes) {
 
 		modelMap.put("buttonCreate", true);
-		Adoption adoption = this.adoptionService.getById(adoptionId);
+		final Adoption adoption = this.adoptionService.getById(adoptionId);
 		// Si al validarlo, encontramos errores:
 		if (result.hasErrors()) {
 			modelMap.put("adoption", adoption);
@@ -106,9 +97,10 @@ public class PetitionController {
 		// Si al validarlo, no hallamos ningún error:
 		else {
 			
+			final Owner ow = this.ownerService.getPrincipal();
 			adoption.addPetition(petition);
 			petition.setAdoption(adoption);
-			petition.setApplicant(this.ownerService.getPrincipal());
+			petition.setApplicant(ow);
 			
 			this.petitionService.savePetition(petition);
 			return "redirect:/adoptions/all";
@@ -116,6 +108,7 @@ public class PetitionController {
 	}
 	
 	@GetMapping(value = "/petitions/mypetitions/{petitionId}/edit")
+	@PreAuthorize("hasAuthority('owner')")
 	public String initUpdateForm(@PathVariable("petitionId") final int petitionId, final ModelMap model) {
 		final Petition petition = this.petitionService.findPetitionById(petitionId);
 		model.put("petition", petition);
@@ -125,6 +118,7 @@ public class PetitionController {
 
     
         @PostMapping(value = "/petitions/mypetitions/{petitionId}/edit")
+        @PreAuthorize("hasAuthority('owner') && @isSamePetitionOwner.hasPermission(#petitionId)")
 	public String processUpdateForm(@Valid final Petition petition, final BindingResult result, final Owner owner,@PathVariable("petitionId") final int petitionId, final ModelMap model
 		,final RedirectAttributes redirectAttributes) {
         

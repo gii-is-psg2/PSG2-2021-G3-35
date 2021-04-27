@@ -107,9 +107,25 @@
 									</div>
 								</div>
 							</li>
--->
+-->						
+							<sec:authorize access="hasAuthority('owner')">
+											   <li> 
+															<div class="navbar-login navbar-login-session">
+																<div class="row">
+																	<div class="col-lg-12">
+																		<p>
+																			<a href="/petitions/mypetitions" class="btn btn-primary btn-block">My petitions</a>
+																			
+																		</p>
+																	</div>
+																</div>
+															</div>
+														</li>
+											</sec:authorize>
 						</ul></li>
 				</sec:authorize>
+				
+				
 			</ul>
 		</div>
 

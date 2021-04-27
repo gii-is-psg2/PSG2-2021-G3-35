@@ -36,13 +36,13 @@ public class PetitionService {
 	}
 	
 	public Petition createPetition() {
-		Petition petition = new Petition();
+		final Petition petition = new Petition();
 		petition.setStatus(PetitionStatus.PENDIENTE);
 		return petition;
 	}
 	
 	@Transactional
-	public Petition savePetition(Petition petition) {
+	public Petition savePetition(final Petition petition) {
 		petition.setStatus(PetitionStatus.PENDIENTE);
 		return this.petitionRepository.save(petition);
 	}
