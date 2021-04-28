@@ -32,7 +32,7 @@
 	                </td>
 	                
 	                 <td>
-<%-- 	                    <c:out value="${totalAcum[cause.id]}"/> / <c:out value="${cause.objetive}"/> --%>
+	                    <c:out value="${cause.getTotalAcumulado()}"/> / <c:out value="${cause.objetive}"/> 
 	                </td>
 	                
 	              	<td>

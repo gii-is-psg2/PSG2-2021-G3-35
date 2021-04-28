@@ -37,16 +37,11 @@ public class CauseService {
 		causeRepository.save(cause);
 	}
 	
-	@Transactional
-	public Double totalDonations(Cause c) {
-		Double total = causeRepository.totalDonationsById(c.getId());
-		return total==null? 0:total;
-	}
 	
 	@Transactional
 	public Boolean getState(Cause c){
 		Boolean estado = true;
-		if(totalDonations(c) >= c.getObjetive()) {
+		if(c.getTotalAcumulado() >= c.getObjetive()) {
 			estado = false;
 		}
 		return estado;

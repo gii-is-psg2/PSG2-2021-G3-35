@@ -118,7 +118,7 @@ public class CauseController {
 			return viewsCausesList;
 		}else {
 			Cause c = oCause.get();
-			Double totalAcum = causeService.totalDonations(c);
+			Double totalAcum = c.getTotalAcumulado();
 			model.addAttribute("totalAcum", totalAcum);
 			model.addAttribute("cause", c);
 			return "/causes/causeDetails";

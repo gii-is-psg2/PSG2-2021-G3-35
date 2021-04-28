@@ -50,47 +50,8 @@ public @Data class Cause extends BaseEntity {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Donation> donations;
 
-	public String getName() {
-		return name;
+	public Double getTotalAcumulado() {
+		return getDonations().stream().mapToDouble(x->x.getAmount()).sum();
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Double getObjetive() {
-		return objetive;
-	}
-
-	public void setObjetive(Double objetive) {
-		this.objetive = objetive;
-	}
-
-	public String getOrganization() {
-		return organization;
-	}
-
-	public void setOrganization(String organization) {
-		this.organization = organization;
-	}
-
-	public Boolean getState() {
-		return state;
-	}
-	
-	public Owner getOwner() {
-		return owner;
-	}
-
-//	public List<Donation> getDonations() {
-//		return donations;
-//	}
 }
