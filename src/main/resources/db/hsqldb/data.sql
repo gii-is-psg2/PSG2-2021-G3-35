@@ -95,11 +95,6 @@ INSERT INTO bookings VALUES(2, '2021-01-10', 2, '2021-01-03', 4);
 INSERT INTO bookings VALUES(3, '2021-03-20', 11, '2021-03-16', 3);
 INSERT INTO bookings VALUES(4, '2021-02-07', 14, '2021-02-03', 1);
 INSERT INTO bookings VALUES(5, '2021-03-17', 6, '2021-03-11', 1);
+
 INSERT INTO bookings VALUES(6, '2021-03-27', 15, '2021-03-11', 1);
 INSERT INTO bookings VALUES(7, '2021-03-28', 19, '2021-03-10', 3);
-
-INSERT INTO causes(id,name,description,objetive,organization,state,owner_Id) VALUES(1, 'Perro1', 'Prueba1', 20.0, 'ETSII', 1, 1);
-INSERT INTO causes(id,name,description,objetive,organization,state,owner_Id) VALUES(2, 'Perro2', 'Prueba2', 20.0, 'ETSII', 0, 2);
-INSERT INTO causes(id,name,description,objetive,organization,state,owner_Id) VALUES(3, 'Perro3', 'Prueba3', 20.0, 'ETSII', 1, 3);
-
-INSERT INTO donations(id,amount,date,cause_id,owner_id) VALUES(1, 20.0, '2021-01-03', 2, 1);
