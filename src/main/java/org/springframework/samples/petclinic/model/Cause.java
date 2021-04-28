@@ -82,7 +82,7 @@ public @Data class Cause extends BaseEntity {
 	public Boolean getState() {
 		return state;
 	}
-
+	
 	public Owner getOwner() {
 		return owner;
 	}

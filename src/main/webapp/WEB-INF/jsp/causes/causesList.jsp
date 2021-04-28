@@ -21,6 +21,7 @@
 	            <th><spring:message code="state"/></th>
 	            <sec:authorize access="hasAuthority('admin')">
 	            <th></th>
+	            <th></th>
 	            </sec:authorize>
 	        </tr>
 	        </thead>
@@ -45,6 +46,13 @@
 	              
 	                <sec:authorize access="hasAuthority('admin')">
 	                <td>
+	                  <spring:url value="/causes/{causeId}/edit" var="editCauseUrl">
+									    <spring:param name="causeId" value="${cause.id}"/>
+						        </spring:url>
+	                  <a href="${editCauseUrl}" class="glyphicon glyphicon-pencil"/></a>
+	                </td>
+	                
+	                <td>
 	                	<spring:url value="/causes/{causeId}/delete" var="deleteUrl">
 	        			      <spring:param name="causeId" value="${cause.id}"/>
 	    				      </spring:url>
@@ -55,4 +63,18 @@
 	        </c:forEach>
 	        </tbody>
 	    </table>
+	    <table class="table-buttons" style="float:left">
+        <tr>
+        	<sec:authorize access="hasAuthority('admin')">
+        	<td style="width: 80px;">
+        		<a class="btn btn-default"  href='<spring:url value="/causes/new" htmlEscape="true"/>'><spring:message code="addcause"/></a>
+            </td>
+            </sec:authorize>  
+        </tr>
+    </table>
+	    
+	    
+	    
+	    
+	    
 </petclinic:layout>
