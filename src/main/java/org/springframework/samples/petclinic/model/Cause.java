@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 
+import com.sun.istack.NotNull;
+
 import lombok.Data;
 
 @Entity
@@ -26,7 +28,7 @@ public @Data class Cause extends BaseEntity {
 	@Column(name = "description")
 	private String description;
 	
-	@NotEmpty
+	@NotNull
 	@Positive
 	@Column(name = "objetive")
 	private Double objetive;
@@ -35,7 +37,7 @@ public @Data class Cause extends BaseEntity {
 	@Column(name = "organization")
 	private String organization;
 
-	@NotEmpty
+	@NotNull
 	@Column(name = "state")
 	private Boolean state;
 	

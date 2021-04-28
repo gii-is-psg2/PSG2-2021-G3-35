@@ -41,7 +41,10 @@
 	                    <c:out value="${cause.organization}"/>
 	                </td>
 	                 <td>
-	                    <c:out value="${cause.state}"/>
+	                 <c:if test="${cause.state == true}"><spring:message code="open" />
+	                 </c:if>
+	                 <c:if test="${cause.state == false}"><spring:message code="close" />
+	                 </c:if>
 	                </td>
 	              
 	                <sec:authorize access="hasAuthority('admin')">
