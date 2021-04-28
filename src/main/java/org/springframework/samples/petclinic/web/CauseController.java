@@ -3,19 +3,22 @@ package org.springframework.samples.petclinic.web;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Cause;
-import org.springframework.samples.petclinic.model.Vet;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.CauseService;
+import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +28,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/causes")
 public class CauseController {
 	private CauseService causeService;
+	private OwnerService ownerService;
 	private static final String views_cause_create_or_update = "causes/createOrUpdateCauseForm";
+	private static final String viewsCausesList = "redirect:/causes";
 	
 	@Autowired
-	public CauseController(CauseService causeService) {
+	public CauseController(CauseService causeService, OwnerService ownerService) {
 		this.causeService = causeService;
+		this.ownerService = ownerService;
+	}
+	
+	@ModelAttribute("owner")
+	public Owner findOwner() {
+		return this.ownerService.getPrincipal();
 	}
 	
 	@GetMapping(value = "/{causeId}/delete")
@@ -47,6 +58,7 @@ public class CauseController {
 	@GetMapping
 	public String listCause(final Map<String, Object> model) {
 		List<Cause> listCauses = causeService.findCauses();
+		//model.put("totalAcum", totalAcum);
 		model.put("causes", listCauses);
 		return "/causes/causesList";			
 	}
@@ -59,15 +71,14 @@ public class CauseController {
 	}
 	
 	@PostMapping(value = "/new")
-	public String processCreationForm(@Valid final Cause cause, final BindingResult result,final ModelMap modelMap, final HttpServletRequest request, final RedirectAttributes redirecAttributes) {
+	public String processCreationForm(@Valid final Cause cause, final BindingResult result, final HttpServletRequest request, final RedirectAttributes redirecAttributes) {
 		if(result.hasErrors()) {
-			modelMap.put("cause", cause);
 			redirecAttributes.addFlashAttribute("message", "addcauseerror");
 			return CauseController.views_cause_create_or_update;
 		}else {
 			redirecAttributes.addFlashAttribute("message", "adcausesucces");
 			this.causeService.saveCause(cause);
-			return "redirect:/causes";
+			return viewsCausesList;
 		}
 	}
 	
@@ -95,9 +106,22 @@ public class CauseController {
 			this.causeService.saveCause(cause);
 			redirectAttributes.addFlashAttribute("message", "editcausesuccess");
 
-			return "redirect:/causes";
+			return viewsCausesList;
 		}
 	}
 	
-	
+	@GetMapping(value = "/{causeId}")
+	public String causeDetails(@PathVariable("causeId") final int causeId, final Model model, final RedirectAttributes redirectAttributes) {
+		Optional<Cause> oCause = causeService.findCauseById(causeId);
+		if(oCause.isEmpty()) {
+			redirectAttributes.addFlashAttribute("message", "causenotfound");
+			return viewsCausesList;
+		}else {
+			Cause c = oCause.get();
+			Double totalAcum = causeService.totalDonations(c);
+			model.addAttribute("totalAcum", totalAcum);
+			model.addAttribute("cause", c);
+			return "/causes/causeDetails";
+		}
+	}
 }

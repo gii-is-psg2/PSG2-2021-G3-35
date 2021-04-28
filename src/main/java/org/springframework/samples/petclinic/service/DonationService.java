@@ -21,12 +21,10 @@ public class DonationService {
 		this.donationRepository = donationRepository;
 	}
 	
-	@Transactional(readOnly = true)
 	public Optional<Donation> findDonationById(int id) throws DataAccessException {
 		return this.donationRepository.findById(id);
 	}
 
-	@Transactional(readOnly = true)
 	public List<Donation> findDonations() throws DataAccessException {
 		List<Donation> res = new ArrayList<>();
 		this.donationRepository.findAll().forEach(res::add);

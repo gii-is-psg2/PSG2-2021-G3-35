@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -10,9 +9,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import com.sun.istack.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import lombok.Data;
 
@@ -45,9 +46,9 @@ public @Data class Cause extends BaseEntity {
 	@JoinColumn(name = "ownerId")
 	private Owner owner;
 	
-//	@OneToMany
-//	@JoinColumn(name = "donationId")
-//	private List<Donation> donations;
+	@OneToMany(mappedBy = "cause")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<Donation> donations;
 
 	public String getName() {
 		return name;

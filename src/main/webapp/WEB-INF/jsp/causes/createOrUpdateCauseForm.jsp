@@ -9,7 +9,7 @@
 
 <petclinic:layout pageName="causes">
     <h2>
-        <c:if test="${cause['new']}"><spring:message code="new" /> &nbsp; </c:if> <spring:message code="cause" />
+        <c:if test="${cause['new']}"><spring:message code="new" />&nbsp;</c:if><spring:message code="cause" />
     </h2>
     <form:form modelAttribute="cause" class="form-horizontal" id="add-cause-form">
         <div class="form-group has-feedback">
@@ -23,6 +23,7 @@
             <petclinic:inputField label="${objetive}" name="objetive"/>
             <petclinic:inputField label="${organization}" name="organization"/>
             <input type="hidden" name="state" value="true"/>
+            <input type="hidden" name="owner" value="${owner.id}"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

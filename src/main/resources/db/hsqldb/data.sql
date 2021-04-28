@@ -102,3 +102,4 @@ INSERT INTO causes(id,name,description,objetive,organization,state,owner_Id) VAL
 INSERT INTO causes(id,name,description,objetive,organization,state,owner_Id) VALUES(2, 'Perro2', 'Prueba2', 20.0, 'ETSII', 0, 2);
 INSERT INTO causes(id,name,description,objetive,organization,state,owner_Id) VALUES(3, 'Perro3', 'Prueba3', 20.0, 'ETSII', 1, 3);
 
+INSERT INTO donations(id,amount,date,cause_id,owner_id) VALUES(1, 20.0, '2021-01-03', 2, 1);

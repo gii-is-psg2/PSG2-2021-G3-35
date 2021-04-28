@@ -39,7 +39,8 @@ public class CauseService {
 	
 	@Transactional
 	public Double totalDonations(Cause c) {
-		return causeRepository.totalDonationsById(c.getId());
+		Double total = causeRepository.totalDonationsById(c.getId());
+		return total==null? 0:total;
 	}
 	
 	@Transactional
@@ -54,7 +55,7 @@ public class CauseService {
 	@Transactional
 	public Cause deleteCause(final Integer causeId) {
 		final Optional<Cause> cause = this.findCauseById(causeId);
-		if(cause == null) {
+		if(cause.isEmpty()) {
 			return null;
 		}else {
 			this.causeRepository.deleteById(causeId);

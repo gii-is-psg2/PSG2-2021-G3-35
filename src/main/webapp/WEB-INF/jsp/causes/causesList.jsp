@@ -9,16 +9,15 @@
 
 <petclinic:layout pageName="causes">
 
-	<h2><spring:message code="veterinarians"/></h2>
+	<h2><spring:message code="causes"/></h2>
 
 	<table id="causesTable" class="table table-striped">
 	        <thead>
 	        <tr>
 	            <th><spring:message code="name"/></th>
-	            <th><spring:message code="description"/></th>
-	            <th><spring:message code="objetive"/></th>
-	            <th><spring:message code="organization"/></th>
-	            <th><spring:message code="state"/></th>
+	            <th><spring:message code="totalAcum"/> / <spring:message code="objetive"/></th>
+	            <th></th>
+	            <th></th>
 	            <sec:authorize access="hasAuthority('admin')">
 	            <th></th>
 	            <th></th>
@@ -31,22 +30,26 @@
 	                <td>
 	                    <c:out value="${cause.name}"/>
 	                </td>
+	                
+	                 <td>
+<%-- 	                    <c:out value="${totalAcum[cause.id]}"/> / <c:out value="${cause.objetive}"/> --%>
+	                </td>
+	                
+	              	<td>
+	                  <spring:url value="/causes/{causeId}" var="causeDetailsUrl">
+									    <spring:param name="causeId" value="${cause.id}"/>
+						        </spring:url>
+	                  <a href="${causeDetailsUrl}" class="btn btn-default"/><spring:message code="details"/></a>
+	                </td>
 	                <td>
-	                    <c:out value="${cause.description}"/>
-	                </td>
-	                 <td>
-	                    <c:out value="${cause.objetive}"/>
-	                </td>
-	                 <td>
-	                    <c:out value="${cause.organization}"/>
-	                </td>
-	                 <td>
-	                 <c:if test="${cause.state == true}"><spring:message code="open" />
-	                 </c:if>
-	                 <c:if test="${cause.state == false}"><spring:message code="close" />
-	                 </c:if>
-	                </td>
-	              
+	                <c:if test="${cause.state == true}">
+	              	
+	                  <spring:url value="/causes/{causeId}/donate" var="donateUrl">
+									    <spring:param name="causeId" value="${cause.id}"/>
+						        </spring:url>
+	                  <a href="${donateUrl}" class="btn btn-default"/><spring:message code="donate"/></a>
+					</c:if>	 
+					</td>             
 	                <sec:authorize access="hasAuthority('admin')">
 	                <td>
 	                  <spring:url value="/causes/{causeId}/edit" var="editCauseUrl">
@@ -66,18 +69,9 @@
 	        </c:forEach>
 	        </tbody>
 	    </table>
-	    <table class="table-buttons" style="float:left">
-        <tr>
-        	<sec:authorize access="hasAuthority('admin')">
-        	<td style="width: 80px;">
-        		<a class="btn btn-default"  href='<spring:url value="/causes/new" htmlEscape="true"/>'><spring:message code="addcause"/></a>
-            </td>
-            </sec:authorize>  
-        </tr>
-    </table>
 	    
-	    
-	    
-	    
+        <div>
+        	<a class="btn btn-default"  href='<spring:url value="/causes/new" htmlEscape="true"/>'><spring:message code="addcause"/></a>
+        </div>  
 	    
 </petclinic:layout>

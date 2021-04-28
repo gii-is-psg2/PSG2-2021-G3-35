@@ -7,12 +7,7 @@ import org.springframework.samples.petclinic.model.Cause;
 
 public interface CauseRepository extends CrudRepository<Cause, Integer> {
 	
-	@Query("SELECT SUM(d) FROM Donation d WHERE d.cause.id =:id ")
+	@Query("SELECT SUM(d.amount) FROM Donation d WHERE d.cause.id =:id ")
 	public Double totalDonationsById(@Param("id")int id);
 		
-	
-	
-	
-	
-	
 }
