@@ -45,6 +45,13 @@
 					<span>${veterinarians}</span>
 				</petclinic:menuItem>
 				
+				<spring:message code="causes" var="causes"/>
+				<petclinic:menuItem active="${name eq 'causes'}" url="/causes"
+					title="${causes}">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>${causes}</span>
+				</petclinic:menuItem>
+				
 				<spring:message code="error" var="error"/>
 				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="${error}">
