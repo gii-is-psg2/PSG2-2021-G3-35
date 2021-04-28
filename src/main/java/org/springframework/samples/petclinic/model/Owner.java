@@ -72,12 +72,6 @@ public class Owner extends Person {
 	private User user;
 	//
 	
-	@OneToMany(mappedBy = "owner")
-	private List<Cause> causes;
-	
-	@OneToMany(mappedBy = "owner")
-	private List<Donation> donations;
-	
 	public String getAddress() {
 		return this.address;
 	}

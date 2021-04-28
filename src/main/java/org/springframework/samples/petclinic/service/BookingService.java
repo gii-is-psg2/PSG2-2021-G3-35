@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.BookingRepository;
 import org.springframework.samples.petclinic.service.exceptions.AllRoomsBookedException;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,8 @@ public class BookingService {
 			throw new AllRoomsBookedException();
 	}
 
+	// No he conseguido que borre, no me da error aparentemente así que no entiendo
+	// bien el problema
 	@Transactional
 	public Booking deleteBooking(final int bookingId) {
 		final Booking booking = this.findBookingById(bookingId);
