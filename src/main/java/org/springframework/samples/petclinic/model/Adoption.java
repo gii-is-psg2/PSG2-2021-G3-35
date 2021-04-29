@@ -53,9 +53,5 @@ public class Adoption extends BaseEntity {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Owner owner;
 	
-	public void addPetition(final Petition petition) {
-		this.getPetitions().add(petition);
-		petition.setAdoption(this);
-	}
 	
 }

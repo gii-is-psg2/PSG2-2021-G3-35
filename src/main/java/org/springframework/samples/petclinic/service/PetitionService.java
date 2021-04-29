@@ -43,7 +43,6 @@ public class PetitionService {
 	
 	@Transactional
 	public Petition savePetition(final Petition petition) {
-		petition.setStatus(PetitionStatus.PENDIENTE);
 		return this.petitionRepository.save(petition);
 	}
 
@@ -64,5 +63,25 @@ public class PetitionService {
 		return this.petitionRepository.findPetitionsByAdoptionId(adoptionId);
 	}
 	
-
+	@Transactional
+	public Petition declinePetition(int petitionId) {
+		Petition petition = findPetitionById(petitionId);
+      	petition.setStatus(PetitionStatus.DENEGADA);
+		return this.petitionRepository.save(petition);
+	}
+	
+	@Transactional
+	public Petition aceptPetition(int petitionId) {
+		Petition petition = findPetitionById(petitionId);
+      	petition.setStatus(PetitionStatus.ACEPTADA);
+		return this.petitionRepository.save(petition);
+	}
+	
+	@Transactional
+	public void declineAllPetitionsExcept(int petitionId, int adoptionId) {
+		Collection<Petition> allPetitionsExcept = this.petitionRepository.findAllExcept(adoptionId, petitionId);
+		allPetitionsExcept.stream().forEach(p->p.setStatus(PetitionStatus.DENEGADA));
+		allPetitionsExcept.stream().forEach(p->this.savePetition(p));
+		
+	}
 }

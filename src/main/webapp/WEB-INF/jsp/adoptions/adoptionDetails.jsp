@@ -5,6 +5,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ page import="org.springframework.samples.petclinic.model.PetitionStatus" %>
 
 
 <petclinic:layout pageName="adoption">
@@ -73,8 +74,9 @@
         <tr>
             <th style="width: 150px;"><spring:message code="description" /></th>
             <th style="width: 200px;"><spring:message code="status" /></th>
-            <th style="width: 100px"><spring:message code="firstname" /></th>
-            <th style="width: 100px"><spring:message code="lastname" /></th>
+            <th style="width: 200px"><spring:message code="name" /></th>
+            <th style="width: 50px"></th>
+            <th style="width: 50px"></th>
         </tr>
         </thead>
         <tbody>
@@ -90,13 +92,36 @@
                     <c:out value="${status}"/>
                 </td>
                 <td>
-                    <c:out value="${petition.applicant.firstName}"/>
+                  <a href="/owners/${petition.applicant.id}">
+                  <c:out value="${petition.applicant.firstName} ${petition.applicant.lastName}"/>
+                  </a>  
                 </td>
-          		<td>
-                    <c:out value="${petition.applicant.lastName}"/>
-                </td>
-                
-            </tr>
+
+					<td><c:choose>
+							<c:when test="${adoption.open}">
+								<spring:url
+									value="/adoptions/{adoptionId}/petitions/{petitionId}/decline"
+									var="declinePetition">
+									<spring:param name="adoptionId" value="${adoption.id}" />
+									<spring:param name="petitionId" value="${petition.id}" />
+								</spring:url>
+								<a href="${declinePetition}" class="glyphicon glyphicon-remove" /></a>
+							</c:when>
+						</c:choose></td>
+
+					<td><c:choose>
+							<c:when test="${adoption.open}">
+								<spring:url
+									value="/adoptions/{adoptionId}/petitions/{petitionId}/accept"
+									var="declinePetition">
+									<spring:param name="adoptionId" value="${adoption.id}" />
+									<spring:param name="petitionId" value="${petition.id}" />
+								</spring:url>
+								<a href="${declinePetition}" class="glyphicon glyphicon-ok" /></a>
+							</c:when>
+						</c:choose></td>
+
+				</tr>
         </c:forEach>
         </tbody>
     </table>

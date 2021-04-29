@@ -21,4 +21,10 @@ public interface PetitionRepository extends CrudRepository<Petition, Integer>{
 	
 	@Query("SELECT petition FROM Petition petition WHERE petition.adoption.id =:adoptionId")
 	public Collection<Petition> findPetitionsByAdoptionId(@Param("adoptionId")int adoptionId);
+
+	@Query("SELECT petition  FROM Petition petition WHERE petition.adoption.id =:adoptionId and petition.id <>:petitionId")
+	public Collection<Petition> findAllExcept(@Param("adoptionId")int adoptionId, @Param("petitionId")int petitionId);
+
+//	@Query("UPDATE Petition p SET p.status = 'DENEGADA' WHERE p.id = :petitionId")
+//	public Petition declinePetition(@Param("petitionId")int petitionId);
 }

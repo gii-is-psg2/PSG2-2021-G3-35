@@ -5,13 +5,18 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Adoption;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Petition;
 import org.springframework.samples.petclinic.model.PetitionStatus;
+import org.springframework.samples.petclinic.repository.AdoptionRepository;
 import org.springframework.samples.petclinic.service.AdoptionService;
 import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.PetitionService;
+import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,14 +34,18 @@ public class PetitionController {
 	private final PetitionService petitionService;
 	private final AdoptionService adoptionService;
 	private final OwnerService ownerService;
-
+	private final PetService petService;
+	private final AdoptionRepository adoptionRepository;
 	
 	@Autowired
-	public PetitionController(final PetitionService petitionService, final AdoptionService adoptionService, final OwnerService ownerService) {
+	public PetitionController(final PetitionService petitionService, final AdoptionService adoptionService, final OwnerService ownerService, final AdoptionRepository adoptionRepository
+									, final PetService petService) {
 
 		this.petitionService = petitionService;
 		this.adoptionService = adoptionService;
 		this.ownerService = ownerService;
+		this.adoptionRepository = adoptionRepository;
+		this.petService = petService;
 	}
 	
 	@GetMapping(value = "/petitions")
@@ -98,7 +107,6 @@ public class PetitionController {
 		else {
 			
 			final Owner ow = this.ownerService.getPrincipal();
-			adoption.addPetition(petition);
 			petition.setAdoption(adoption);
 			petition.setApplicant(ow);
 			
@@ -135,10 +143,53 @@ public class PetitionController {
 		else {
 			petition.setAdoption(adoption);
 			petition.setApplicant(this.petitionService.findPetitionById(petitionId).getApplicant());
+			petition.setStatus(PetitionStatus.PENDIENTE);
 			this.petitionService.savePetition(petition);
 			redirectAttributes.addFlashAttribute("message", "editpetitionsuccess");
 			return "redirect:/petitions/mypetitions";
 		}
 	}
+        
+
+        @GetMapping(value = "/adoptions/{adoptionId}/petitions/{petitionId}/decline")
+//        @PreAuthorize("hasAuthority('owner') && @isSamePetitionOwner.hasPermission(#petitionId)")
+		public String processPetitionDecline(@PathVariable("petitionId") final int petitionId, 
+				@PathVariable("adoptionId") final int adoptionId,	final ModelMap model, final RedirectAttributes redirectAttributes) {
+        	
+        	Petition petition = this.petitionService.findPetitionById(petitionId);
+        	petition.setStatus(PetitionStatus.DENEGADA);
+//			this.petitionService.declinePetition(petitionId);
+        	this.petitionService.savePetition(petition);
+			redirectAttributes.addFlashAttribute("message", "declinepetitionsuccess");
+			return "redirect:/adoptions/{adoptionId}";
+
+		}
 	
+		@GetMapping(value = "/adoptions/{adoptionId}/petitions/{petitionId}/accept")
+//      @PreAuthorize("hasAuthority('owner') && @isSamePetitionOwner.hasPermission(#petitionId)")
+		public String processPetitionAccept(@PathVariable("petitionId") final int petitionId,
+				@PathVariable("adoptionId") final int adoptionId, final ModelMap model,	final RedirectAttributes redirectAttributes) throws DataAccessException, DuplicatedPetNameException {
+			
+			Adoption adoption = this.adoptionService.getById(adoptionId);
+			
+			if(Boolean.TRUE.equals(adoption.getOpen())) {
+				this.petitionService.aceptPetition(petitionId);
+				this.petitionService.declineAllPetitionsExcept(petitionId, adoptionId);
+				
+				adoption.setOpen(false);
+				this.adoptionRepository.save(adoption);
+				
+				Pet pet = adoption.getPet();
+				pet.setOwner(this.petitionService.findPetitionById(petitionId).getApplicant());
+				this.petService.savePet(pet);
+				
+				redirectAttributes.addFlashAttribute("message", "aceptpetitionsuccess");
+				return "redirect:/adoptions/{adoptionId}";
+			} else {
+				redirectAttributes.addFlashAttribute("message", "aceptpetitionerror");
+				return "redirect:/adoptions/{adoptionId}";
+			}
+			
+
+		}
 }
