@@ -12,12 +12,21 @@ import org.springframework.samples.petclinic.model.Booking;
 public interface BookingRepository extends CrudRepository<Booking, Integer>{
 	
 	
-	@Query("SELECT booking.room FROM Booking booking WHERE (booking.startDate <=:startDate and booking.endDate >=:startDate) "
-															+ "or (booking.startDate <=:endDate and booking.endDate >=:endDate)"
-															+ "or (booking.startDate >=:startDate and booking.endDate <=:endDate)"
-															+ "or (booking.startDate <=:startDate and booking.endDate >=:endDate)")
-	public Collection<Integer> findUsedRooms(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
+	
+	@Query("SELECT booking FROM Booking booking WHERE (booking.startDate <=:startDate and booking.endDate >=:startDate) "
+			+ "or (booking.startDate <=:endDate and booking.endDate >=:endDate)"
+			+ "or (booking.startDate >=:startDate and booking.endDate <=:endDate)"
+			+ "or (booking.startDate <=:startDate and booking.endDate >=:endDate)")
+	public Collection<Booking> findUsedRooms(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+	
+	@Query("SELECT booking.room FROM Booking booking WHERE ((booking.startDate <=:startDate and booking.endDate >=:startDate) "
+			+ "or (booking.startDate <=:endDate and booking.endDate >=:endDate)"
+			+ "or (booking.startDate >=:startDate and booking.endDate <=:endDate)"
+			+ "or (booking.startDate <=:startDate and booking.endDate >=:endDate))"
+			+ "and (booking.pet.id =:petId)")
+	public Collection<Integer> findUsedRoomsWithPetId(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, 
+																														@Param("petId") int petId);
+	
 	
 	@Query("SELECT booking FROM Booking booking WHERE booking.id =:bookingId")
 	public Booking findBookingById(@Param("bookingId")int bookingId);
