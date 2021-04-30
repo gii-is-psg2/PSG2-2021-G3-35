@@ -38,4 +38,8 @@ public class AdoptionService {
 		}
 	}
 	
+	public void createAdoption(final Adoption adoption) {
+		this.adoptionRepository.save(adoption);
+	}
+	
 }

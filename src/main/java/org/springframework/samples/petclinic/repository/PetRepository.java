@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Modifying;
@@ -59,5 +60,8 @@ public interface PetRepository extends Repository<Pet, Integer> {
 	@Modifying
 	@Query("DELETE FROM Pet pet WHERE pet.id =:id")
 	void deleteById(@Param("id") int id);
+	
+	@Query("SELECT p FROM Pet p WHERE p.owner.id =:id")
+	Set<Pet> findPetsByOwnerId(@Param("id") int id);
 
 }

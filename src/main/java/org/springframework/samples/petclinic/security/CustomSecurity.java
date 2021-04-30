@@ -119,5 +119,23 @@ public class CustomSecurity {
 		}
 	
 	}
+	
+	@Component("hasPetsForAdoption")
+	public class HasPetsForAdoption {
+		
+	    public boolean hasPermission(final int id) {
+	    	try {
+	    	final int ownerIdLoggedIn = CustomSecurity.this.ownerService.findByUserUsername(SecurityContextHolder.getContext()
+	    		.getAuthentication().getName()).get().getId();
+	    	return CustomSecurity.this.petService.findPetsWithOpenAdoptionByOwnerId(ownerIdLoggedIn).size()!=
+	    		CustomSecurity.this.ownerService.findOwnerById(ownerIdLoggedIn).getPets().size();
+
+	    	}catch(final Exception e) {
+	    		return false;
+	    	}
+	    }
+	    
+	    
+	}
 
 }

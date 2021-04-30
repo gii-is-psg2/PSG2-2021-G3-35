@@ -223,11 +223,20 @@
                  </c:choose>
                 </td>
                 
+                
 
             </tr>
         </c:forEach>
         </tbody>
+        
+        
     </table>
+    
+    <sec:authorize access="hasAuthority('owner') && @isSameOwner.hasPermission(#ownerId) && @hasPetsForAdoption.hasPermission(#ownerId)">
+                    <spring:url value="/adoptions/new" var="createAdoptionUrl">
+					</spring:url>
+                    <a href="${fn:escapeXml(createAdoptionUrl)}" class="btn btn-default"><spring:message code="new"/> &nbsp;<spring:message code="adoption"/></a>
+                </sec:authorize>
     
     
 </petclinic:layout>

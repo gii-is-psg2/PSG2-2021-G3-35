@@ -10,6 +10,10 @@
               description="Names in the list" %>
 <%@ attribute name="size" required="true" rtexprvalue="true"
               description="Size of Select" %>
+<%@ attribute name="itemvalue" required="false" rtexprvalue="true"
+              description="value of object to send" %>
+<%@ attribute name="itemlabel" required="false" rtexprvalue="true"
+              description="label for every object" %>
 
 
 <spring:bind path="${name}">
@@ -19,7 +23,12 @@
         <label class="col-sm-2 control-label">${label}</label>
 
         <div class="col-sm-10">
-            <form:select class="form-control" path="${name}" items="${names}" size="${size}"/>
+        	<c:if test="${not empty itemvalue && not empty itemlabel}" >
+            <form:select class="form-control" path="${name}" items="${names}" itemValue="${itemvalue}" itemLabel="${itemlabel}" size="${size}"/>
+            </c:if>
+            <c:if test="${empty itemvalue && empty itemlabel}" >
+            <form:select class="form-control" path="${name}" items="${names}"  size="${size}"/>
+            </c:if>
             <c:if test="${valid}">
                 <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
             </c:if>

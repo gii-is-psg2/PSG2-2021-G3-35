@@ -14,9 +14,13 @@ public interface AdoptionRepository extends CrudRepository<Adoption, Integer> {
 	@Query("SELECT a FROM Adoption a WHERE a.owner.id =:id ORDER BY a.open DESC,a.publishDate DESC")
 	public Collection<Adoption> findAllByOwnerId(@Param ("id") int id);
 	
+	@Query("SELECT a FROM Adoption a WHERE a.owner.id =:id AND a.open=1")
+	public Collection<Adoption> findOpenByOwnerId(@Param ("id") int id);
+	
 	@Query("SELECT a FROM Adoption a WHERE a.id =:id")
 	public Adoption findById(@Param ("id") int id);
 	
+	@Override
 	@Query("SELECT a FROM Adoption a ORDER BY a.open DESC,a.publishDate DESC")
 	public Collection<Adoption> findAll();
 	
