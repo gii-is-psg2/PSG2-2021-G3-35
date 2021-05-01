@@ -59,7 +59,7 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 23 (28/4)         |         |                |  😃              |                | :neutral_face:               |
 | Day 24 (29/4)         | :worried:      |   :neutral_face: |                |           :smiley:     |                |
 | Day 25 (30/4)         |   :smiley:       |                |                |                |                |
-| Day 26 (1/5)         |         |                |                |      :worried:           |                |
+| Day 26 (1/5)         |         |   😐          |                |      :worried:           |                |
 | Day 27 (2/5)         |         |                |                |                |                |
 | Day 28 (3/5)         |         |                |                |                |                |
 | Day 29 (4/5)         |         |                |                |                |                |
