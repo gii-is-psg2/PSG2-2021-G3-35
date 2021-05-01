@@ -2,9 +2,11 @@ package org.springframework.samples.petclinic.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.samples.petclinic.service.AdoptionService;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.PetitionService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +29,12 @@ public class CustomSecurity {
 	
 	@Autowired
 	BookingService bookingService;
+	
+	@Autowired
+	PetitionService petitionService;
+	
+	@Autowired
+	AdoptionService adoptionService;
 	
 	@Component("isSameOwner")
 	public class IsSameOwner {
@@ -62,6 +70,23 @@ public class CustomSecurity {
 	    
 	}
 	
+	@Component("isSamePetitionOwner")
+	public class IsSamePetitionOwner {
+		
+	    public boolean hasPermission(final int id) {
+	    	try {
+	    	final String userOfDeletion= CustomSecurity.this.petitionService.findPetitionById(id).getApplicant().getUser().getUsername();
+	    	final String userAuth = SecurityContextHolder.getContext().getAuthentication().getName();
+	        return userOfDeletion.equals(userAuth);
+	        
+	    	}catch(final Exception e) {
+	    		return false;
+	    	}
+	    }
+	    
+	    
+	}
+	
 	@Component("isSamePetOwner")
 	public class IsSamePetOwner {
 		
@@ -78,6 +103,39 @@ public class CustomSecurity {
 	    }
 	}
 	
+	@Component("isSameAdoptionOwner")
+	public class IsSameAdoptionOwner{
+		
+		public boolean hasPermission(final int id) {
+			
+			try {
+			final String userOfDeletion = CustomSecurity.this.adoptionService.getById(id).getOwner().getUser().getUsername();
+			final String userAuth = SecurityContextHolder.getContext().getAuthentication().getName();
+			return userOfDeletion.equals(userAuth);
+				
+			}catch(final Exception e) {
+				return false;
+			}
+		}
 	
+	}
+	
+	@Component("hasPetsForAdoption")
+	public class HasPetsForAdoption {
+		
+	    public boolean hasPermission(final int id) {
+	    	try {
+	    	final int ownerIdLoggedIn = CustomSecurity.this.ownerService.findByUserUsername(SecurityContextHolder.getContext()
+	    		.getAuthentication().getName()).get().getId();
+	    	return CustomSecurity.this.petService.findPetsWithOpenAdoptionByOwnerId(ownerIdLoggedIn).size()!=
+	    		CustomSecurity.this.ownerService.findOwnerById(ownerIdLoggedIn).getPets().size();
+
+	    	}catch(final Exception e) {
+	    		return false;
+	    	}
+	    }
+	    
+	    
+	}
 
 }

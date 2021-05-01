@@ -11,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.exceptions.AllRoomsBookedException;
+import org.springframework.samples.petclinic.service.exceptions.RoomAlreadyBookedForPet;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,13 +37,15 @@ public class BookingServiceTests {
 			this.bookingService.saveBooking(booking);
 		} catch (final AllRoomsBookedException e) {
 			System.out.println("Error inesperado");
+		}catch (RoomAlreadyBookedForPet e) {
+			System.out.println("Error inesperado");
 		}
 		Assertions.assertThat(booking.getId()).isNotNull();
 	}
 	
 	@Test
 	void shouldFindUsedRooms() throws Exception {
-		final Collection<Integer> bookings = this.bookingService.findUsedRooms(LocalDate.of(2021, 03, 21), LocalDate.of(2021, 03, 25));
+		final Collection<Booking> bookings = this.bookingService.findUsedRooms(LocalDate.of(2021, 03, 21), LocalDate.of(2021, 03, 25));
 		Assertions.assertThat(bookings.size()).isEqualTo(2);
 	}
 	
