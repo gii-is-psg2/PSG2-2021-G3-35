@@ -99,6 +99,7 @@
 
 					<td><c:choose>
 							<c:when test="${adoption.open}">
+							<sec:authorize access="hasAuthority('admin') || hasAuthority('owner') && @isSameAdoptionOwner.hasPermission(${adoption.id})">
 								<spring:url
 									value="/adoptions/{adoptionId}/petitions/{petitionId}/decline"
 									var="declinePetition">
@@ -106,11 +107,13 @@
 									<spring:param name="petitionId" value="${petition.id}" />
 								</spring:url>
 								<a href="${declinePetition}" class="glyphicon glyphicon-remove" /></a>
+								</sec:authorize>
 							</c:when>
 						</c:choose></td>
 
 					<td><c:choose>
 							<c:when test="${adoption.open}">
+							<sec:authorize access="hasAuthority('admin') || hasAuthority('owner') && @isSameAdoptionOwner.hasPermission(${adoption.id})">
 								<spring:url
 									value="/adoptions/{adoptionId}/petitions/{petitionId}/accept"
 									var="declinePetition">
@@ -118,6 +121,7 @@
 									<spring:param name="petitionId" value="${petition.id}" />
 								</spring:url>
 								<a href="${declinePetition}" class="glyphicon glyphicon-ok" /></a>
+								</sec:authorize>
 							</c:when>
 						</c:choose></td>
 
