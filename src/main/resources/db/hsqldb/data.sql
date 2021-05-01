@@ -36,6 +36,7 @@ INSERT INTO authorities(id,username,authority) VALUES (11,'owner10','owner');
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (12,'vet1','veterinarian');
 
+
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
@@ -98,6 +99,15 @@ INSERT INTO bookings VALUES(5, '2021-03-17', 6, '2021-03-11', 1);
 INSERT INTO bookings VALUES(6, '2021-03-27', 15, '2021-03-11', 1);
 INSERT INTO bookings VALUES(7, '2021-03-28', 19, '2021-03-10', 3);
 
+
+INSERT INTO adoptions(id,title,description,open,publish_date,pet_id,owner_id) VALUES (0,'Lindo perrito en adopción', 'No tengo tiempo para cuidar del pequeñín, si alguien puede por favor que se haga cargo.', 1,'2022-01-06',3,3);
+INSERT INTO adoptions(id,title,description,open,publish_date,pet_id,owner_id) VALUES (1,'Gatito abandonado', 'Lo encontré en la calle, busca dueño', 0,'2022-01-04',1,1);
+
+INSERT INTO adoptions(id,title,description,open,publish_date,pet_id,owner_id) VALUES (2,'Perrito solitario', 'Lo encontré en la calle, busca dueña', 0,'2022-01-14',4,3);
+
+INSERT INTO petitions(description, status,applicant,adoption) VALUES ('PRUEBA1','1',1,0);
+INSERT INTO petitions(description, status,applicant,adoption) VALUES ('PRUEBA12','1',1,0);
+INSERT INTO petitions(description, status,applicant,adoption) VALUES ('PRUEBA13','2',1,0);
 INSERT INTO causes(id,name,description,objetive,organization,state,owner_Id) VALUES(1, 'Perro1', 'Prueba1', 20.0, 'ETSII', 1, 1);
 INSERT INTO causes(id,name,description,objetive,organization,state,owner_Id) VALUES(2, 'Perro2', 'Prueba2', 20.0, 'ETSII', 0, 2);
 INSERT INTO causes(id,name,description,objetive,organization,state,owner_Id) VALUES(3, 'Perro3', 'Prueba3', 20.0, 'ETSII', 1, 3);

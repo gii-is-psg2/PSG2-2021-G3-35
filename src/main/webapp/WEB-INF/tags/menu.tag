@@ -45,6 +45,12 @@
 					<span>${veterinarians}</span>
 				</petclinic:menuItem>
 				
+				<spring:message code="adoptionsmenu" var="adoptionsmenu"/>
+				<petclinic:menuItem active="${name eq 'adoptionsmenu'}" url="/adoptions/all"
+					title="${adoptionsmenu}">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>${adoptionsmenu}</span>
+
 				<spring:message code="causes" var="causes"/>
 				<petclinic:menuItem active="${name eq 'causes'}" url="/causes"
 					title="${causes}">
@@ -52,11 +58,7 @@
 					<span>${causes}</span>
 				</petclinic:menuItem>
 				
-				<spring:message code="error" var="error"/>
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
-					title="${error}">
-					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-					<span>${error}</span>
+			
 				</petclinic:menuItem>
 
 			</ul>
@@ -73,7 +75,7 @@
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> 
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>Â 
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>
@@ -114,9 +116,25 @@
 									</div>
 								</div>
 							</li>
--->
+-->						
+							<sec:authorize access="hasAuthority('owner')">
+											   <li> 
+															<div class="navbar-login navbar-login-session">
+																<div class="row">
+																	<div class="col-lg-12">
+																		<p>
+																			<a href="/petitions/mypetitions" class="btn btn-primary btn-block">My petitions</a>
+																			
+																		</p>
+																	</div>
+																</div>
+															</div>
+														</li>
+											</sec:authorize>
 						</ul></li>
 				</sec:authorize>
+				
+				
 			</ul>
 		</div>
 

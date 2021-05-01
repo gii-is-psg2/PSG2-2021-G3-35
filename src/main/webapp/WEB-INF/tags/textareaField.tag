@@ -1,4 +1,3 @@
-
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -6,29 +5,15 @@
               description="Name of corresponding property in bean object" %>
 <%@ attribute name="label" required="true" rtexprvalue="true"
               description="Label appears in red color if input is considered as invalid after submission" %>
-<%@ attribute name="names" required="true" rtexprvalue="true" type="java.util.List"
-              description="Names in the list" %>
-<%@ attribute name="size" required="true" rtexprvalue="true"
-              description="Size of Select" %>
-<%@ attribute name="itemvalue" required="false" rtexprvalue="true"
-              description="value of object to send" %>
-<%@ attribute name="itemlabel" required="false" rtexprvalue="true"
-              description="label for every object" %>
-
 
 <spring:bind path="${name}">
-    <c:set var="cssGroup" value="form-group ${status.error ? 'error' : '' }"/>
+    <c:set var="cssGroup" value="form-group ${status.error ? 'has-error' : '' }"/>
     <c:set var="valid" value="${not status.error and not empty status.actualValue}"/>
     <div class="${cssGroup}">
         <label class="col-sm-2 control-label">${label}</label>
 
         <div class="col-sm-10">
-        	<c:if test="${not empty itemvalue && not empty itemlabel}" >
-            <form:select class="form-control" path="${name}" items="${names}" itemValue="${itemvalue}" itemLabel="${itemlabel}" size="${size}"/>
-            </c:if>
-            <c:if test="${empty itemvalue && empty itemlabel}" >
-            <form:select class="form-control" path="${name}" items="${names}"  size="${size}"/>
-            </c:if>
+            <form:textarea class="form-control" path="${name}"/>
             <c:if test="${valid}">
                 <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
             </c:if>

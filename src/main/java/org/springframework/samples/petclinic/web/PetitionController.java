@@ -1,0 +1,191 @@
+package org.springframework.samples.petclinic.web;
+
+import java.util.Map;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.model.Adoption;
+import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.Petition;
+import org.springframework.samples.petclinic.model.PetitionStatus;
+import org.springframework.samples.petclinic.repository.AdoptionRepository;
+import org.springframework.samples.petclinic.service.AdoptionService;
+import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.PetitionService;
+import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@Controller
+
+public class PetitionController {
+
+	private final PetitionService petitionService;
+	private final AdoptionService adoptionService;
+	private final OwnerService ownerService;
+	private final PetService petService;
+	private final AdoptionRepository adoptionRepository;
+
+	@Autowired
+	public PetitionController(final PetitionService petitionService, final AdoptionService adoptionService,
+			final OwnerService ownerService, final AdoptionRepository adoptionRepository, final PetService petService) {
+
+		this.petitionService = petitionService;
+		this.adoptionService = adoptionService;
+		this.ownerService = ownerService;
+		this.adoptionRepository = adoptionRepository;
+		this.petService = petService;
+	}
+
+	@GetMapping(value = "/petitions")
+	@PreAuthorize("hasAuthority('owner')")
+	public String showPetitions(final Map<String, Object> model) {
+		model.put("petitions", this.petitionService.findAll());
+		return "petitions/petitionsList";
+	}
+
+	@GetMapping(value = "/petitions/mypetitions")
+	@PreAuthorize("hasAuthority('owner')")
+	public String showMyPetitions(final Map<String, Object> model) {
+		model.put("petitions", this.petitionService.findMyPetitions(this.ownerService.getPrincipal().getId()));
+		return "petitions/myPetitionsList";
+	}
+
+	@GetMapping(value = "/petitions/mypetitions/{petitionId}/delete")
+	@PreAuthorize("hasAuthority('owner') && @isSamePetitionOwner.hasPermission(#petitionId)")
+	public String deletePetition(@PathVariable("petitionId") final int petitionId, final ModelMap model,
+			final RedirectAttributes redirectAttributes) {
+		final Petition res = this.petitionService.deletePetition(petitionId);
+		if (res == null) {
+			redirectAttributes.addFlashAttribute("message", "deletepetitionerror");
+		} else {
+			redirectAttributes.addFlashAttribute("message", "deletepetitionsuccess");
+		}
+		return "redirect:/petitions/mypetitions";
+	}
+
+	@GetMapping("/adoptions/{adoptionId}/petitions/new")
+	public String initAddPetition(@PathVariable("adoptionId") final int adoptionId, final ModelMap modelMap) {
+
+		final Petition petition = new Petition();
+		petition.setApplicant(this.ownerService.getPrincipal());
+		petition.setStatus(PetitionStatus.PENDIENTE);
+		final Adoption adoption = this.adoptionService.getById(adoptionId);
+
+		modelMap.put("petition", petition);
+		modelMap.put("adoption", adoption);
+
+		return "petitions/createOrUpdatePetitionForm";
+	}
+
+	@PostMapping("/adoptions/{adoptionId}/petitions/new")
+	@PreAuthorize("hasAuthority('owner')")
+	public String processNewPetition(@PathVariable("adoptionId") final int adoptionId, @Valid final Petition petition,
+			final BindingResult result, final ModelMap modelMap, final RedirectAttributes redirectAttributes) {
+
+		modelMap.put("buttonCreate", true);
+		final Owner ow = this.ownerService.getPrincipal();
+		final Adoption adoption = this.adoptionService.getById(adoptionId);
+		// Si al validarlo, encontramos errores:
+		if (result.hasErrors() || adoption.getOwner().equals(ow)) {
+			modelMap.put("adoption", adoption);
+			modelMap.put("petition", petition);
+			modelMap.put("message", "createpetitionerror");
+			return "petitions/createOrUpdatePetitionForm";
+		}
+		// Si al validarlo, no hallamos ningún error:
+		else {
+
+			petition.setAdoption(adoption);
+			petition.setApplicant(ow);
+
+			this.petitionService.savePetition(petition);
+			redirectAttributes.addFlashAttribute("message", "createpetitionsuccess");
+			return "redirect:/adoptions/all";
+		}
+	}
+
+	@GetMapping(value = "/petitions/mypetitions/{petitionId}/edit")
+	@PreAuthorize("hasAuthority('owner')")
+	public String initUpdateForm(@PathVariable("petitionId") final int petitionId, final ModelMap model) {
+		final Petition petition = this.petitionService.findPetitionById(petitionId);
+		model.put("petition", petition);
+		model.put("adoption", petition.getAdoption());
+		return "petitions/createOrUpdatePetitionForm";
+	}
+
+	@PostMapping(value = "/petitions/mypetitions/{petitionId}/edit")
+	@PreAuthorize("hasAuthority('owner') && @isSamePetitionOwner.hasPermission(#petitionId)")
+	public String processUpdateForm(@Valid final Petition petition, final BindingResult result, final Owner owner,
+			@PathVariable("petitionId") final int petitionId, final ModelMap model,
+			final RedirectAttributes redirectAttributes) {
+
+		final Adoption adoption = this.petitionService.findPetitionById(petitionId).getAdoption();
+
+		if (result.hasErrors()) {
+
+			model.put("petition", petition);
+			model.put("adoption", adoption);
+			redirectAttributes.addFlashAttribute("message", "editpetitionerror");
+			return "petitions/createOrUpdatePetitionForm";
+		} else {
+			petition.setAdoption(adoption);
+			petition.setApplicant(this.petitionService.findPetitionById(petitionId).getApplicant());
+			petition.setStatus(PetitionStatus.PENDIENTE);
+			this.petitionService.savePetition(petition);
+			redirectAttributes.addFlashAttribute("message", "editpetitionsuccess");
+			return "redirect:/petitions/mypetitions";
+		}
+	}
+
+	@GetMapping(value = "/adoptions/{adoptionId}/petitions/{petitionId}/decline")
+	@PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSameAdoptionOwner.hasPermission(#adoptionId)")
+	public String processPetitionDecline(@PathVariable("petitionId") final int petitionId,
+			@PathVariable("adoptionId") final int adoptionId, final ModelMap model,
+			final RedirectAttributes redirectAttributes) {
+
+		Petition petition = this.petitionService.findPetitionById(petitionId);
+		petition.setStatus(PetitionStatus.DENEGADA);
+		this.petitionService.savePetition(petition);
+		redirectAttributes.addFlashAttribute("message", "declinepetitionsuccess");
+		return "redirect:/adoptions/{adoptionId}";
+	}
+
+	@GetMapping(value = "/adoptions/{adoptionId}/petitions/{petitionId}/accept")
+	@PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSameAdoptionOwner.hasPermission(#adoptionId)")
+	public String processPetitionAccept(@PathVariable("petitionId") final int petitionId,
+			@PathVariable("adoptionId") final int adoptionId, final ModelMap model,
+			final RedirectAttributes redirectAttributes) throws DataAccessException, DuplicatedPetNameException {
+
+		Adoption adoption = this.adoptionService.getById(adoptionId);
+		Petition petition = this.petitionService.findPetitionById(petitionId);
+		if (Boolean.TRUE.equals(adoption.getOpen()) && petition.getStatus().equals(PetitionStatus.PENDIENTE)) {
+			this.petitionService.aceptPetition(petitionId);
+			this.petitionService.declineAllPetitionsExcept(petitionId, adoptionId);
+
+			adoption.setOpen(false);
+			this.adoptionRepository.save(adoption);
+
+			Pet pet = adoption.getPet();
+			pet.setOwner(this.petitionService.findPetitionById(petitionId).getApplicant());
+			this.petService.savePet(pet);
+
+			redirectAttributes.addFlashAttribute("message", "aceptpetitionsuccess");
+			return "redirect:/adoptions/{adoptionId}";
+		} else {
+			redirectAttributes.addFlashAttribute("message", "aceptpetitionerror");
+			return "redirect:/adoptions/{adoptionId}";
+		}
+
+	}
+}

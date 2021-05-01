@@ -15,13 +15,19 @@
  */
 package org.springframework.samples.petclinic.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.model.Adoption;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.repository.AdoptionRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
@@ -42,12 +48,15 @@ public class PetService {
 	
 	private final VisitRepository visitRepository;
 	
+	private final AdoptionRepository adoptionRepository;
+	
 
 	@Autowired
 	public PetService(final PetRepository petRepository,
-			final VisitRepository visitRepository) {
+			final VisitRepository visitRepository, final AdoptionRepository adoptionRepository) {
 		this.petRepository = petRepository;
 		this.visitRepository = visitRepository;
+		this.adoptionRepository = adoptionRepository;
 	}
 
 	@Transactional(readOnly = true)
@@ -100,6 +109,16 @@ public class PetService {
     		return pet;
     	}
     		
+	}
+	
+	public Set<Pet> findPetsWithOpenAdoptionByOwnerId(final int id) {
+		return this.adoptionRepository.findOpenByOwnerId(id).stream().map(Adoption::getPet).collect(Collectors.toSet());
+	}
+	
+	public List<Pet> findPetsWithNoOpenAdoptionByOwnerId(final int id){
+		final Set<Pet> all = this.petRepository.findPetsByOwnerId(id);
+		all.removeAll(this.findPetsWithOpenAdoptionByOwnerId(id));
+		return new ArrayList<>(all);
 	}
 	
 	

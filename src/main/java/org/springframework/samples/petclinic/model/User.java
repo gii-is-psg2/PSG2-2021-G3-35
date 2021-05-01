@@ -25,6 +25,10 @@ public class User{
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<Authorities> authorities;
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "applicant")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Set<Petition> petitions;
+	
 	public String getUsername() {
 		return this.username;
 	}
