@@ -62,10 +62,11 @@ public class DonationController {
 	}
 	
 	@PostMapping(value = "/donate")
-	public String processCreationForm(@Valid final Donation donation, final BindingResult result, final RedirectAttributes redirecAttributes) {
+	public String processCreationForm(@PathVariable("causeId") final int causeId, @Valid final Donation donation, final BindingResult result, final Map<String,Object> model, final RedirectAttributes redirecAttributes) {
 		if(result.hasErrors()) {
+			model.put("donation", donation);
 			redirecAttributes.addFlashAttribute("message", "adddonationerror");
-			return DonationController.viewDonationCreate;
+			return this.initCreationForm(causeId, model, redirecAttributes);
 		}else {
 			redirecAttributes.addFlashAttribute("message", "adddonationsuccess");
 			donation.setDate(LocalDate.now());

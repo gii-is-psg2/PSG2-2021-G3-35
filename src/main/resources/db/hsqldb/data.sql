@@ -101,7 +101,7 @@ INSERT INTO bookings VALUES(7, '2021-03-28', 19, '2021-03-10', 3);
 
 
 INSERT INTO adoptions(id,title,description,open,publish_date,pet_id,owner_id) VALUES (0,'Lindo perrito en adopción', 'No tengo tiempo para cuidar del pequeñín, si alguien puede por favor que se haga cargo.', 1,'2022-01-06',3,3);
-INSERT INTO adoptions(id,title,description,open,publish_date,pet_id,owner_id) VALUES (1,'Gatito abandonado', 'Lo encontré en la calle, busca dueño', 0,'2022-01-04',1,1);
+INSERT INTO adoptions(id,title,description,open,publish_date,pet_id,owner_id) VALUES (1,'Gatito abandonado', 'Lo encontré en la calle, busca dueño', 1,'2022-01-04',1,1);
 
 INSERT INTO adoptions(id,title,description,open,publish_date,pet_id,owner_id) VALUES (2,'Perrito solitario', 'Lo encontré en la calle, busca dueña', 0,'2022-01-14',4,3);
 

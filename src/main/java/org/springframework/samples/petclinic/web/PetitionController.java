@@ -11,7 +11,6 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Petition;
 import org.springframework.samples.petclinic.model.PetitionStatus;
-import org.springframework.samples.petclinic.repository.AdoptionRepository;
 import org.springframework.samples.petclinic.service.AdoptionService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
@@ -34,16 +33,14 @@ public class PetitionController {
 	private final AdoptionService adoptionService;
 	private final OwnerService ownerService;
 	private final PetService petService;
-	private final AdoptionRepository adoptionRepository;
 
 	@Autowired
 	public PetitionController(final PetitionService petitionService, final AdoptionService adoptionService,
-			final OwnerService ownerService, final AdoptionRepository adoptionRepository, final PetService petService) {
+			final OwnerService ownerService, final PetService petService) {
 
 		this.petitionService = petitionService;
 		this.adoptionService = adoptionService;
 		this.ownerService = ownerService;
-		this.adoptionRepository = adoptionRepository;
 		this.petService = petService;
 	}
 
@@ -174,7 +171,7 @@ public class PetitionController {
 			this.petitionService.declineAllPetitionsExcept(petitionId, adoptionId);
 
 			adoption.setOpen(false);
-			this.adoptionRepository.save(adoption);
+			this.adoptionService.createAdoption(adoption);
 
 			Pet pet = adoption.getPet();
 			pet.setOwner(this.petitionService.findPetitionById(petitionId).getApplicant());
