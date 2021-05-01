@@ -7,7 +7,7 @@
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 <%@ attribute name="name" required="true" rtexprvalue="true"
 	description="Name of the active menu: home, owners, vets or error"%>
-	
+
 
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
@@ -23,51 +23,52 @@
 		</div>
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
-			
-				<spring:message code="homepage" var="homepage"/>
+
+				<spring:message code="homepage" var="homepage" />
 				<petclinic:menuItem active="${name eq 'home'}" url="/"
 					title="${homepage}">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>${homepage}</span>
 				</petclinic:menuItem>
-				
-				<spring:message code="findowners" var="findowners"/>
+
+				<spring:message code="findowners" var="findowners" />
 				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
 					title="${findowners}">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>${findowners}</span>
 				</petclinic:menuItem>
-				
-				<spring:message code="veterinarians" var="veterinarians"/>
+
+				<spring:message code="veterinarians" var="veterinarians" />
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="${veterinarians}">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>${veterinarians}</span>
 				</petclinic:menuItem>
-				
-				<spring:message code="adoptionsmenu" var="adoptionsmenu"/>
-				<petclinic:menuItem active="${name eq 'adoptionsmenu'}" url="/adoptions/all"
-					title="${adoptionsmenu}">
+
+				<spring:message code="adoptionsmenu" var="adoptionsmenu" />
+				<petclinic:menuItem active="${name eq 'adoptionsmenu'}"
+					url="/adoptions/all" title="${adoptionsmenu}">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>${adoptionsmenu}</span>
+				</petclinic:menuItem>
 
-				<spring:message code="causes" var="causes"/>
+				<spring:message code="causes" var="causes" />
 				<petclinic:menuItem active="${name eq 'causes'}" url="/causes"
 					title="${causes}">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>${causes}</span>
 				</petclinic:menuItem>
-				
-			
-				</petclinic:menuItem>
+
+
+
 
 			</ul>
 
 
 
-			<spring:message code="login" var="login"/>
-			<spring:message code="register" var="register"/>
-			
+			<spring:message code="login" var="login" />
+			<spring:message code="register" var="register" />
+
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">${login}</a></li>
@@ -75,11 +76,11 @@
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>Â 
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> 
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu" style="background-color: #563929">
 							<li>
 								<div class="navbar-login">
 									<div class="row">
@@ -94,15 +95,15 @@
 											</p>
 											<p class="text-left">
 												<a href="<c:url value="/logout" />"
-													class="btn btn-primary btn-block btn-sm"><spring:message code="logout"/>
-													</a>
+													class="btn btn-primary btn-block btn-sm"><spring:message
+														code="logout" /> </a>
 											</p>
 										</div>
 									</div>
 								</div>
 							</li>
 							<li class="divider"></li>
-<!-- 							
+							<!-- 							
                             <li> 
 								<div class="navbar-login navbar-login-session">
 									<div class="row">
@@ -116,25 +117,28 @@
 									</div>
 								</div>
 							</li>
--->						
+-->
+							<spring:message code="mypetitions" var="mypetitions" />
 							<sec:authorize access="hasAuthority('owner')">
-											   <li> 
-															<div class="navbar-login navbar-login-session">
-																<div class="row">
-																	<div class="col-lg-12">
-																		<p>
-																			<a href="/petitions/mypetitions" class="btn btn-primary btn-block">My petitions</a>
-																			
-																		</p>
-																	</div>
-																</div>
-															</div>
-														</li>
-											</sec:authorize>
+								<li>
+									<div class="navbar-login navbar-login-session">
+										<div class="row">
+											<div class="col-lg-12">
+												<p>
+													<a href="/petitions/mypetitions"
+														class="btn btn-primary btn-block"><spring:message
+															code="mypetitions" /></a>
+
+												</p>
+											</div>
+										</div>
+									</div>
+								</li>
+							</sec:authorize>
 						</ul></li>
 				</sec:authorize>
-				
-				
+
+
 			</ul>
 		</div>
 
