@@ -65,8 +65,7 @@ public class DonationController {
 	public String processCreationForm(@PathVariable("causeId") final int causeId, @Valid final Donation donation, final BindingResult result, final Map<String,Object> model, final RedirectAttributes redirecAttributes) {
 		if(result.hasErrors()) {
 			model.put("donation", donation);
-			redirecAttributes.addFlashAttribute("message", "adddonationerror");
-			return this.initCreationForm(causeId, model, redirecAttributes);
+			return DonationController.viewDonationCreate;
 		}else {
 			redirecAttributes.addFlashAttribute("message", "adddonationsuccess");
 			donation.setDate(LocalDate.now());
