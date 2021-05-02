@@ -72,10 +72,12 @@ public class Owner extends Person {
 	private User user;
 	//
 	
-	@OneToMany(mappedBy = "owner")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Cause> causes;
 	
-	@OneToMany(mappedBy = "owner")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Donation> donations;
 	
 	public String getAddress() {
