@@ -61,5 +61,5 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 25 (30/4)         |   :smiley:       |                |                |                |       :smiley:            |
 | Day 26 (1/5)         |         |   😐          |    :neutral_face:            |      :neutral_face:           |  :smiley:              |
 | Day 27 (2/5)         |   :smiley:      |       😃      |    :smiley:          |        :smiley:        |     :neutral_face:             |
-| Day 28 (3/5)         |         |                |                |                |                |
+| Day 28 (3/5)         |         |                |                |                | :smiley:               |
 | Day 29 (4/5)         |         |                |                |                |                |
