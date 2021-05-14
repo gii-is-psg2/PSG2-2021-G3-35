@@ -50,7 +50,7 @@ public class CauseService {
 	@Transactional
 	public Cause deleteCause(final Integer causeId) {
 		final Optional<Cause> cause = this.findCauseById(causeId);
-		if(cause.isEmpty()) {
+		if(!cause.isPresent()) {
 			return null;
 		}else {
 			this.causeRepository.deleteById(causeId);
