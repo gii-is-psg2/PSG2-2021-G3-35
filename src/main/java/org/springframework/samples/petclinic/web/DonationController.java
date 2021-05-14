@@ -48,7 +48,7 @@ public class DonationController {
 	@GetMapping(value = "/donate")
 	public String initCreationForm(@PathVariable("causeId") final int causeId, final Map<String,Object> model, final RedirectAttributes redirecAttributes) {
 		final Optional<Cause> oCause = this.causeService.findCauseById(causeId);
-		if(oCause.isEmpty()) {
+		if(!oCause.isPresent()) {
 			redirecAttributes.addFlashAttribute("message", "causenotfound");
 			return DonationController.viewCausesList;
 		}else if(!oCause.get().getState()){

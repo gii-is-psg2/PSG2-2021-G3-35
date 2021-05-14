@@ -113,7 +113,7 @@ public class CauseController {
 	@GetMapping(value = "/{causeId}")
 	public String causeDetails(@PathVariable("causeId") final int causeId, final Model model, final RedirectAttributes redirectAttributes) {
 		Optional<Cause> oCause = causeService.findCauseById(causeId);
-		if(oCause.isEmpty()) {
+		if(!oCause.isPresent()) {
 			redirectAttributes.addFlashAttribute("message", "causenotfound");
 			return viewsCausesList;
 		}else {
