@@ -34,9 +34,9 @@
     <spring:url value="{ownerId}/edit" var="editUrl">
         <spring:param name="ownerId" value="${owner.id}"/>
     </spring:url>
-
+	<sec:authorize access="hasAuthority('admin') || @isSameOwner.hasPermission(#ownerId)">
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default"><spring:message code="editowner"/></a>
-
+	</sec:authorize>
  <sec:authorize access="hasAuthority('admin') || @isSameOwner.hasPermission(#ownerId)">
     <spring:url value="{ownerId}/delete" var="deleteUrl">
         <spring:param name="ownerId" value="${owner.id}"/>

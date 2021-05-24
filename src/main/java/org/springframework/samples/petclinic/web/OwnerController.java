@@ -126,6 +126,7 @@ public class OwnerController {
 	}
 
 	@GetMapping(value = "/owners/{ownerId}/edit")
+	@PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSameOwner.hasPermission(#ownerId)")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") final int ownerId, final Model model) {
 		final Owner owner = this.ownerService.findOwnerById(ownerId);
 		model.addAttribute(owner);
@@ -133,6 +134,7 @@ public class OwnerController {
 	}
 
 	@PostMapping(value = "/owners/{ownerId}/edit")
+	@PreAuthorize("hasAuthority('admin') || hasAuthority('owner') && @isSameOwner.hasPermission(#ownerId)")
 	public String processUpdateOwnerForm(@Valid final Owner owner, final BindingResult result,
 			@PathVariable("ownerId") final int ownerId, final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
