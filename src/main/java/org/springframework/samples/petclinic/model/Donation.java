@@ -16,8 +16,8 @@ import lombok.Data;
 @Table(name = "donations")
 public @Data class Donation extends BaseEntity{
 	
-	@NotNull(message="holi")
-	@Positive()
+	@NotNull
+	@Positive
 	@Column(name = "amount")
 	private Double amount;
 	
