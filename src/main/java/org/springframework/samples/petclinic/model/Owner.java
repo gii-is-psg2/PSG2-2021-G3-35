@@ -62,7 +62,7 @@ public class Owner extends Person {
 	@Column(name = "telephone")
 	@NotEmpty
 	@Digits(fraction = 0, integer = 10)
-	@Pattern(regexp = "[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]",message="Introduce un número de teléfono correcto/Introduce a correct phone number")
+	@Pattern(regexp = "[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]")	
 	private String telephone;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
