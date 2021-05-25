@@ -7,10 +7,10 @@
 
 <petclinic:layout pageName="error">
 
-    <spring:url value="/resources/images/pets.png" var="petsImage"/>
-    <img src="${petsImage}"/>
+    <spring:url value="/resources/images/error.jpg" var="petsImage"/>
+    <img id="perroError" src="${petsImage}"/>
 
-    <h2><spring:message code="exception" text="default"/></h2>
+    <h2  style="font-size: xx-large;margin-left: 41%;margin-top: 2%"><spring:message code="exception" text="default"/></h2>
     
     <p>${exception.message}</p>
 

@@ -9,3 +9,8 @@ body{
 td,th{
 	background-color: #895B41;
 }
+
+#perroError{
+	margin-left: 37%; 
+}
+
