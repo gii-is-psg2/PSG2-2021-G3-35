@@ -30,12 +30,12 @@ public class Person extends BaseEntity {
 
 	@Column(name = "first_name")
 	@NotEmpty
-	@Pattern(regexp = "[^0-9]*", message = "Introduce un nombre correcto / Introduce a First Name correct")
+	@Pattern(regexp = "[^0-9]*")
 	protected String firstName;
 
 	@Column(name = "last_name")
 	@NotEmpty
-	@Pattern(regexp = "[^0-9]*", message = "Introduce un Apellido correcto / Introduce a Second Name correct")
+	@Pattern(regexp = "[^0-9]*")
 	protected String lastName;
 
 	public String getFirstName() {
