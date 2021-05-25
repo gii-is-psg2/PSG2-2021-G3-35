@@ -6,11 +6,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page import="java.util.*"%>
-<% List items = new ArrayList(); %>
+
 <petclinic:layout pageName="vets">
     <h2>
         <c:if test="${vet['new']}"><spring:message code="new" /> &nbsp; </c:if> <spring:message code="vet" />
     </h2>
+    
     <form:form modelAttribute="vet" class="form-horizontal" id="add-vet-form">
         <div class="form-group has-feedback">
         
@@ -19,9 +20,7 @@
          <spring:message code="specialties" var="specialties"/>
             <petclinic:inputField label="${firstname }" name="firstName"/>
             <petclinic:inputField label="${lastname }" name="lastName"/>
-			
-			<petclinic:selectField label="${specialties }" name="specialties" names="${listSpecialties}" size="3"/>
-		
+			<petclinic:checkboxes label="${specialties}" name="specialties" names="${listSpecialties}"/>
         	
         </div>
         <div class="form-group">
