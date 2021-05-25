@@ -74,15 +74,26 @@ public class PetitionController {
 	@GetMapping("/adoptions/{adoptionId}/petitions/new")
 	public String initAddPetition(@PathVariable("adoptionId") final int adoptionId, final ModelMap modelMap) {
 
-		final Petition petition = new Petition();
-		petition.setApplicant(this.ownerService.getPrincipal());
-		petition.setStatus(PetitionStatus.PENDIENTE);
 		final Adoption adoption = this.adoptionService.getById(adoptionId);
+		final Owner ow = this.ownerService.getPrincipal();
+		
+		//Esto sirve para comprobar que no hay peticiones previas del owner de principal a esta adopcion
+		if (adoption.getPetitions().stream().anyMatch(x->x.getApplicant().equals(ow))) {
+			
+			modelMap.put("adoptions", this.adoptionService.getAllAdoptions());
+			modelMap.put("message", "petitionalreadycreatederror");
+			return "adoptions/list";
+		} else {
+			final Petition petition = new Petition();
+			petition.setApplicant(this.ownerService.getPrincipal());
+			petition.setStatus(PetitionStatus.PENDIENTE);
+			
 
-		modelMap.put("petition", petition);
-		modelMap.put("adoption", adoption);
+			modelMap.put("petition", petition);
+			modelMap.put("adoption", adoption);
 
-		return "petitions/createOrUpdatePetitionForm";
+			return "petitions/createOrUpdatePetitionForm";
+		}
 	}
 
 	@PostMapping("/adoptions/{adoptionId}/petitions/new")

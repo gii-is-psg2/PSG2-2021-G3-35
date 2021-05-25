@@ -21,6 +21,7 @@
         <form:form modelAttribute="pet"
                    class="form-horizontal">
             <input type="hidden" name="id" value="${pet.id}"/>
+            <input type="hidden" name="owner" value="${pet.owner.id}"/>
             <div class="form-group has-feedback">
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><spring:message code="owner"/></label>
