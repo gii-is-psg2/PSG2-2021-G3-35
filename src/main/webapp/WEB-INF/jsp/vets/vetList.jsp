@@ -19,8 +19,8 @@
             <th><spring:message code="firstname"/></th>
             <th><spring:message code="specialties"/></th>
             <sec:authorize access="hasAuthority('admin')">
-            <th></th>
-            <th></th>
+            <th style="width:30px"></th>
+            <th style="width:30px"></th>
             </sec:authorize>
         </tr>
         </thead>

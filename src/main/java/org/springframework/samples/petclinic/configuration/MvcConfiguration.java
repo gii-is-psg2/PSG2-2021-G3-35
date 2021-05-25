@@ -45,8 +45,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 	    messageSource.setBasename("messages/messages");
 	    return messageSource;
 	}
-    
-    
+
     /* END LANGUAGUE CONFIGURATION */
 
 }
