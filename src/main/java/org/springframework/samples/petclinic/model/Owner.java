@@ -59,7 +59,7 @@ public class Owner extends Person {
 
 	@Column(name = "telephone")
 	@NotEmpty
-	@Digits(fraction = 0, integer = 10, message = "Wrong phone format. It must contain 9 digits.")
+	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
