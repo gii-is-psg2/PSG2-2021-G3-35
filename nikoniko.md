@@ -59,7 +59,36 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 23 (28/4)         |         |                |  😃              |                | :neutral_face:               |
 | Day 24 (29/4)         | :worried:      |   :neutral_face: |                |           :smiley:     |                |
 | Day 25 (30/4)         |   :smiley:       |                |                |                |       :smiley:            |
-| Day 26 (1/5)         |         |   😐          |    :neutral_face:            |      :neutral_face:           |  :smiley:              |
-| Day 27 (2/5)         |   :smiley:      |       😃      |    :smiley:          |        :smiley:        |     :neutral_face:             |
-| Day 28 (3/5)         |          |                 |              |             |                |
-| Day 29 (4/5)         |         |                |                |                |                |
+| Day 26 (1/5)          |         |   😐          |    :neutral_face:            |      :neutral_face:           |  :smiley:              |
+| Day 27 (2/5)          |   :smiley:      |       😃      |    :smiley:          |        :smiley:        |     :neutral_face:             |
+| Day 28 (3/5)          |          |                 |              |             |                |
+| Day 29 (4/5)          |         |                |                |                |                |
+| Day 30 (5/5)          |         |                |                |                |                |
+| Day 31 (6/5)          |         |                |                |                |                |
+| Day 32 (7/5)          |         |                |                |                |                |
+| Day 33 (8/5)          |         |                |                |                |                |
+| Day 34 (9/5)          |         |                |                |                |                |
+| Day 35 (10/5)         |         |                |                |                |                |
+| Day 36 (11/5)         |         |                |                |                |                |
+| Day 37 (12/5)         |         |                |                |                |                |
+| Day 38 (13/5)         |         |                |                |                |                |
+| Day 39 (14/5)         |         |                |                |                |                |
+| Day 40 (15/5)         |         |                |                |                |                |
+| Day 41 (16/5)         |         |                |                |                |                |
+| Day 42 (17/5)         |         |                |                |                |                |
+| Day 43 (18/5)         |         |                |                |                |                |
+| Day 44 (19/5)         |         |                |                |                |                |
+| Day 45 (20/5)         |         |                |                |                |                |
+| Day 46 (21/5)         |         |                |                |                |                |
+| Day 47 (22/5)         |         |                |                |                |                |
+| Day 48 (23/5)         |         |                |                |                |                |
+| Day 49 (24/5)         |         |                |                |                |                |
+| Day 50 (25/5)         |         |                |                |                |                |
+| Day 51 (26/5)         |         |                |                |                |                |
+| Day 52 (27/5)         |         |                |                |                |                |
+| Day 53 (28/5)         |         |                |                |                |                |
+| Day 54 (29/5)         |         |                |                |                |                |
+| Day 55 (30/5)         |         |                |                |                |                |
+| Day 56 (31/5)         |         |                |                |                |                |
+| Day 57 (1/6)          |         |                |                |                |                |
+| Day 58 (2/6)          |         |                |                |                |                |
