@@ -62,7 +62,7 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 26 (1/5)          |         |   😐          |    :neutral_face:            |      :neutral_face:           |  :smiley:              |
 | Day 27 (2/5)          |   :smiley:      |       😃      |    :smiley:          |        :smiley:        |     :neutral_face:             |
 | Day 28 (3/5)          |          |                 |              |             |                |
-| Day 29 (4/5)          |         |                |                |                |                |
+|(Sprint 4) Day 29 (4/5)|         |                |                |                |                |
 | Day 30 (5/5)          |         |                |                |                |                |
 | Day 31 (6/5)          |         |                |                |                |                |
 | Day 32 (7/5)          |         |                |                |                |                |
@@ -70,19 +70,19 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 34 (9/5)          |         |                |                |                |                |
 | Day 35 (10/5)         |         |                |                |                |                |
 | Day 36 (11/5)         |         |                |                |                |                |
-| Day 37 (12/5)         |         |                |                |                |                |
-| Day 38 (13/5)         |         |                |                |                |                |
-| Day 39 (14/5)         |         |                |                |                |                |
+| Day 37 (12/5)         |         |                |                |                | :neutral_face:               |
+| Day 38 (13/5)         |         |                |                |                | :smiley:               |
+| Day 39 (14/5)         |         |                |                |                | :smiley:               |
 | Day 40 (15/5)         |         |                |                |                |                |
-| Day 41 (16/5)         |         |                |                |                |                |
+| Day 41 (16/5)         |         |                |                |                |   :smiley:             |
 | Day 42 (17/5)         |         |                |                |                |                |
 | Day 43 (18/5)         |         |                |                |                |                |
 | Day 44 (19/5)         |         |                |                |                |                |
 | Day 45 (20/5)         |         |                |                |                |                |
-| Day 46 (21/5)         |         |                |                |                |                |
+| Day 46 (21/5)         |         |                |                |                |  :smiley:              |
 | Day 47 (22/5)         |         |                |                |                |                |
-| Day 48 (23/5)         |         |                |                |                |                |
-| Day 49 (24/5)         |         |                |                |                |                |
+| Day 48 (23/5)         |         |                |                |                | :smiley:               |
+| Day 49 (24/5)         |         |                |                |                | :smiley:               |
 | Day 50 (25/5)         |         |                |                |                |                |
 | Day 51 (26/5)         |         |                |                |                |                |
 | Day 52 (27/5)         |         |                |                |                |                |
