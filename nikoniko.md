@@ -72,9 +72,9 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 36 (11/5)         |         |                |                |                |                |
 | Day 37 (12/5)         |         |                |                |                | :neutral_face:               |
 | Day 38 (13/5)         |         |                |                |                | :smiley:               |
-| Day 39 (14/5)         |         |                |                |                | :smiley:               |
+| Day 39 (14/5)         |         |                |                |       :smiley:            | :smiley:               |
 | Day 40 (15/5)         |         |                |                |                |                |
-| Day 41 (16/5)         |         |                |                |                |   :smiley:             |
+| Day 41 (16/5)         |         |                |                |          :smiley:         |   :smiley:             |
 | Day 42 (17/5)         |         |                |                |                |                |
 | Day 43 (18/5)         |         |                |                |                |                |
 | Day 44 (19/5)         |         |                |                |        :smiley:        |                |
