@@ -72,19 +72,19 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 36 (11/5)         |         |                |                |                |                |
 | Day 37 (12/5)         |         |                |                |                | :neutral_face:               |
 | Day 38 (13/5)         |         |     😃        |                |                | :smiley:               |
-| Day 39 (14/5)         |         |      😃       |                |       :smiley:            | :smiley:               |
+| Day 39 (14/5)         |    😃      |      😃       |                |       :smiley:            | :smiley:               |
 | Day 40 (15/5)         |         |                |                |                |                |
-| Day 41 (16/5)         |         |                |                |          :smiley:         |   :smiley:             |
+| Day 41 (16/5)         |     😃     |                |                |          :smiley:         |   :smiley:             |
 | Day 42 (17/5)         |         |     😃        |                |                |                |
 | Day 43 (18/5)         |         |                |:smiley:                |                |                |
-| Day 44 (19/5)         |         |     😃        |   :smiley:             |        :smiley:        |                |
+| Day 44 (19/5)         |      😃    |     😃        |   :smiley:             |        :smiley:        |                |
 | Day 45 (20/5)         |         |                |                |     :neutral_face:            |                |
-| Day 46 (21/5)         |         |     😃        | :smiley:               |     :smiley:            |  :smiley:              |
+| Day 46 (21/5)         |    😃      |     😃        | :smiley:               |     :smiley:            |  :smiley:              |
 | Day 47 (22/5)         |         |                |                |                |                |
 | Day 48 (23/5)         |         |                |                |                | :smiley:               |
-| Day 49 (24/5)         |         |     😃        |:smiley:                |       :smiley:          | :smiley:               |
+| Day 49 (24/5)         |      😃    |     😃        |:smiley:                |       :smiley:          | :smiley:               |
 | Day 50 (25/5)         |         |     😐        | :smiley:               |                |                |
-| Day 51 (26/5)         |         |                |:smiley:                |                |                |
+| Day 51 (26/5)         |    😃      |                |:smiley:                |                |                |
 | Day 52 (27/5)         |         |                |                |                |                |
 | Day 53 (28/5)         |         |     😃        |                |                |                |
 | Day 54 (29/5)         |         |     😃        |                |              :smiley:   |                |
